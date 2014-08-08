@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+#define kTagForActivityView 121212
+
 @interface UIView (ErrorFeedbackView)
 {
     
 }
 + (UIView*)getErrorFeedbackViewWithMessage:(NSString*)stringMessage inSuperview:(UIView*)viewSuperview;
++ (UIView*)getActivityViewWithMessage:(NSString*)stringMessage inSuperview:(UIView*)viewSuperview;
 @end

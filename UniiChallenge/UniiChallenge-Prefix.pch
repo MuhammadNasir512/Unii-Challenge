@@ -11,7 +11,10 @@
 #endif
 
 #ifdef __OBJC__
-    #import <UIKit/UIKit.h>
-    #import <Foundation/Foundation.h>
-    #import "UIView+ErrorFeedbackView.h"
+
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import "UIView+ErrorFeedbackView.h"
+#import "UtilityMethods.h"
+
 #endif

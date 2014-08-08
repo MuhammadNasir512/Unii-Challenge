@@ -8,72 +8,108 @@
 
 #import "ViewController.h"
 #import "ServerCommunicationController.h"
+#import "PostsTableViewController.h"
 
 @interface ViewController ()
 <
 ServerCommunicationControllerDelegate
 >
 {
-    
+    PostsTableViewController *postsTableVC;
 }
+@property (nonatomic, weak) IBOutlet UIView *viewPlaceHoler;
 @end
 
 @implementation ViewController
 
+@synthesize viewPlaceHoler = viewPlaceHolerWeak;
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    
+    float systemVersion = [[UIDevice currentDevice].systemVersion floatValue];
+    float statusBarHeight = [[UIApplication sharedApplication] statusBarFrame].size.height;
+    float navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
+
+    float xx = viewPlaceHolerWeak.frame.origin.x;
+    float yy = statusBarHeight + navigationBarHeight;
+    yy = (systemVersion >= 7.0)?yy:0.0f;
+    float ww = viewPlaceHolerWeak.frame.size.width;
+    float hh = self.view.frame.size.height - yy;
+    [viewPlaceHolerWeak setFrame:CGRectMake(xx, yy, ww, hh)];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self initNavigationBar];
     [self startLoadingDataFromServer];
 }
 
+- (void)initNavigationBar
+{
+    UINavigationBar *nBar = [[self navigationController] navigationBar];
+    if ([nBar respondsToSelector:@selector(setBarTintColor:)])
+    {
+        [nBar setBarTintColor:[UIColor blueColor]];
+        return;
+    }
+    if ([nBar respondsToSelector:@selector(setTintColor:)])
+    {
+        [nBar setTintColor:[UIColor blueColor]];
+        return;
+    }
+}
 - (void)startLoadingDataFromServer
 {
+    [self showActivityViewOnView:[self view]];
     NSString *urlString = @"http://unii-interview.herokuapp.com/api/v1/posts";
     ServerCommunicationController *scc = [[ServerCommunicationController alloc] init];
     [scc setDelegate:self];
     [scc setStringURLString:urlString];
     [scc sendRequestToServer];
 }
+- (void)showActivityViewOnView:(UIView*)viewSuperview
+{
+    [viewSuperview addSubview:[UIView getActivityViewWithMessage:@"Loading! Please Wait." inSuperview:viewSuperview]];
+}
+- (void)serverResponseFailedWithError:(NSMutableDictionary*)mutableDictionaryError
+{
+    [UtilityMethods removeActivityViewOnView:[self view]];
+    [UtilityMethods feedbackUserWithMessage:@"An error occured." inSuperview:[self view]];
+}
 
 - (void)serverResponseSuccessfulWithData:(NSMutableDictionary*)mutableDictionaryResponse
 {
+    [UtilityMethods removeActivityViewOnView:[self view]];
+    NSMutableDictionary *mdResponse = [mutableDictionaryResponse objectForKey:@"Response"];
+    NSMutableDictionary *mdPosts = [mdResponse objectForKey:@"posts"];
+    NSMutableArray *mutableArrayPosts = (NSMutableArray*)[mdPosts objectForKey:@"data"];
+    [self initPostsTableViewControllerWithData:mutableArrayPosts];
 }
 
-- (void)serverResponseFailedWithError:(NSMutableDictionary*)mutableDictionaryError
+- (void)initPostsTableViewControllerWithData:(NSMutableArray*)mutableArrayPosts
 {
-    [self feedbackUserWithMessage:@"An error occured."];
-}
-
-- (void)feedbackUserWithMessage:(NSString*)stringMessage
-{
-    CGFloat floatDuration = 3.0f;
-    stringMessage = [NSString stringWithFormat:@"%@\n%@ %f seconds", stringMessage, @"This view will be dismissed in", floatDuration];
-    
-    UIView *viewErrorFeedback = [UIView getErrorFeedbackViewWithMessage:stringMessage inSuperview:self.view];
-    [[self view] addSubview:viewErrorFeedback];
-    [viewErrorFeedback setAlpha:0.0f];
-    
-    [UIView animateWithDuration:1.0 animations:^{
-        [viewErrorFeedback setAlpha:1.0f];
-        
-    } completion:^(BOOL finished) {
-
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            
-            [UIView animateWithDuration:1.0 animations:^{
-                [viewErrorFeedback setAlpha:0.0f];
-                
-            } completion:^(BOOL finished) {
-                
-                [viewErrorFeedback removeFromSuperview];
-            }];
-        });
-    }];
+    if (!postsTableVC)
+    {
+        postsTableVC = [[PostsTableViewController alloc] init];
+    }
+    UIView *postsView = [viewPlaceHolerWeak viewWithTag:1212];
+    if (!postsView)
+    {
+        float xx = 0.0f;
+        float yy = 0.0f;
+        float ww = viewPlaceHolerWeak.frame.size.width;
+        float hh = viewPlaceHolerWeak.frame.size.height;
+        postsView = [postsTableVC view];
+        [postsView setTag:1212];
+        [postsView setFrame:CGRectMake(xx, yy, ww, hh)];
+        [viewPlaceHolerWeak addSubview:postsView];
+    }
 }
 @end
