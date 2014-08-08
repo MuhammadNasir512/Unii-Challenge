@@ -23,6 +23,8 @@
 		023A70B21995517C0053F10E /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 023A70B11995517C0053F10E /* ViewController.xib */; };
 		023A70BB199554DD0053F10E /* ServerCommunicationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 023A70BA199554DD0053F10E /* ServerCommunicationController.m */; };
 		023A70BC199554DD0053F10E /* ServerCommunicationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 023A70BA199554DD0053F10E /* ServerCommunicationController.m */; };
+		023A70C0199561CF0053F10E /* UIView+ErrorFeedbackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 023A70BF199561CF0053F10E /* UIView+ErrorFeedbackView.m */; };
+		023A70C1199561CF0053F10E /* UIView+ErrorFeedbackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 023A70BF199561CF0053F10E /* UIView+ErrorFeedbackView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +59,8 @@
 		023A70B11995517C0053F10E /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		023A70B9199554DD0053F10E /* ServerCommunicationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerCommunicationController.h; sourceTree = "<group>"; };
 		023A70BA199554DD0053F10E /* ServerCommunicationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerCommunicationController.m; sourceTree = "<group>"; };
+		023A70BE199561CF0053F10E /* UIView+ErrorFeedbackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ErrorFeedbackView.h"; sourceTree = "<group>"; };
+		023A70BF199561CF0053F10E /* UIView+ErrorFeedbackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ErrorFeedbackView.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +120,7 @@
 		023A7082199550930053F10E /* UniiChallenge */ = {
 			isa = PBXGroup;
 			children = (
+				023A70BD1995619B0053F10E /* Categories */,
 				023A70B8199554A00053F10E /* Classes */,
 				023A708B199550930053F10E /* AppDelegate.h */,
 				023A708C199550930053F10E /* AppDelegate.m */,
@@ -164,6 +169,15 @@
 				023A70BA199554DD0053F10E /* ServerCommunicationController.m */,
 			);
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		023A70BD1995619B0053F10E /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				023A70BE199561CF0053F10E /* UIView+ErrorFeedbackView.h */,
+				023A70BF199561CF0053F10E /* UIView+ErrorFeedbackView.m */,
+			);
+			path = Categories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -263,6 +277,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				023A70C0199561CF0053F10E /* UIView+ErrorFeedbackView.m in Sources */,
 				023A7093199550930053F10E /* ViewController.m in Sources */,
 				023A708D199550930053F10E /* AppDelegate.m in Sources */,
 				023A7089199550930053F10E /* main.m in Sources */,
@@ -275,6 +290,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				023A70A8199550940053F10E /* UniiChallengeTests.m in Sources */,
+				023A70C1199561CF0053F10E /* UIView+ErrorFeedbackView.m in Sources */,
 				023A70BC199554DD0053F10E /* ServerCommunicationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -464,6 +480,7 @@
 				023A70AD199550940053F10E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		023A70AE199550940053F10E /* Build configuration list for PBXNativeTarget "UniiChallengeTests" */ = {
 			isa = XCConfigurationList;
@@ -472,6 +489,7 @@
 				023A70B0199550940053F10E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

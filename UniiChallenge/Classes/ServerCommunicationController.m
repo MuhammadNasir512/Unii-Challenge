@@ -103,7 +103,6 @@
         [mdError setObject:stringURLString forKey:@"stringURLString"];
         [self dispatchServerResponseFailedWithError:mdError];
     }
-    
 }
 
 /********************************************************************/
@@ -112,11 +111,11 @@
 
 - (void)dispatchServerResponseSuccessfulWithData:(NSMutableDictionary*)mutableDictionaryResponse
 {
-    [delegate serverResponseSuccessfulWithData:mutableDictionaryResponse];
+    [[self delegate] serverResponseSuccessfulWithData:mutableDictionaryResponse];
 }
 - (void)dispatchServerResponseFailedWithError:(NSMutableDictionary*)mutableDictionaryError
 {
-    [delegate serverResponseFailedWithError:mutableDictionaryError];
+    [[self delegate] serverResponseFailedWithError:mutableDictionaryError];
 }
 
 @end
