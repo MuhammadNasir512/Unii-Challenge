@@ -115,7 +115,6 @@
     if (imageAvataar)
     {
         [imageViewPhotoWeak setImage:imageAvataar];
-//        NSLog(@"Found:%f", imageAvataar.size.height);
     }
     else
     {
@@ -130,8 +129,10 @@
             
             NSData *urlData = [NSData dataWithContentsOfURL:[NSURL URLWithString:stringPhotoUrl]];
             UIImage *image = [[UIImage alloc] initWithData:urlData];
+            image = (image.size.width > image.size.height)?[UIImage cropImageWRTHeight:image]:image;
+            image = (image.size.height > image.size.width)?[UIImage cropImageWRTWidth:image]:image;
             
-            image = [UtilityMethods resizeImageWithRespectToHeight:image withTargetHeight:imageViewPhotoWeak.frame.size.height*1.2];
+            image = [UIImage resizeImageWithRespectToHeight:image withTargetHeight:imageViewPhotoWeak.frame.size.height*1.2];
             [mdUser setObject:image forKey:@"scaledImage"];
 
             dispatch_async(dispatch_get_main_queue(), ^{

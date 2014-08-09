@@ -18,5 +18,4 @@
 + (CGSize)getRecommendedSizeForLabel:(UILabel*)label;
 + (void)createFrameForView:(UIView*)viewToAdjust withSize:(CGSize)sizeRecommended;
 + (void)adjustFrameVerticallyForView:(UIView*)viewToAdjust toShowBelowView:(UIView*)viewAbove withPadding:(CGFloat)padding;
-+ (UIImage*)resizeImageWithRespectToHeight:(UIImage*)originalImage withTargetHeight:(float)targetHeight;
 @end

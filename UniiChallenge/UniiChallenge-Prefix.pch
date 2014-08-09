@@ -15,6 +15,7 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import "UIView+ErrorFeedbackView.h"
+#import "UIImage+ResizedImage.h"
 #import "UtilityMethods.h"
 
 #endif
