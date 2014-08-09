@@ -80,13 +80,13 @@ ServerCommunicationControllerDelegate
 }
 - (void)serverResponseFailedWithError:(NSMutableDictionary*)mutableDictionaryError
 {
-    [UtilityMethods removeActivityViewOnView:[self view]];
+    [UtilityMethods removeActivityViewFromView:[self view]];
     [UtilityMethods feedbackUserWithMessage:@"An error occured." inSuperview:[self view]];
 }
 
 - (void)serverResponseSuccessfulWithData:(NSMutableDictionary*)mutableDictionaryResponse
 {
-    [UtilityMethods removeActivityViewOnView:[self view]];
+    [UtilityMethods removeActivityViewFromView:[self view]];
     NSMutableDictionary *mdResponse = [mutableDictionaryResponse objectForKey:@"Response"];
     NSMutableDictionary *mdPosts = [mdResponse objectForKey:@"posts"];
     NSMutableArray *mutableArrayPosts = (NSMutableArray*)[mdPosts objectForKey:@"data"];
@@ -111,5 +111,6 @@ ServerCommunicationControllerDelegate
         [postsView setFrame:CGRectMake(xx, yy, ww, hh)];
         [viewPlaceHolerWeak addSubview:postsView];
     }
+    [postsTableVC setMutableArrayPosts:mutableArrayPosts];
 }
 @end
