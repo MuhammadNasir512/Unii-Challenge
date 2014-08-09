@@ -25,6 +25,7 @@
 
 @implementation PostCell
 
+@synthesize delegate = _delegate;
 @synthesize viewMainView = viewMainViewWeak;
 @synthesize labelPostText = labelPostTextWeak;
 @synthesize labelName = labelNameWeak;
@@ -63,6 +64,7 @@
     [self setupPostTextLabel];
     [self adjustSizeForMainView];
     [self setupNameLikesAndCommentsInfo];
+    [self setupPhoto];
 }
 - (void)resetViews
 {
@@ -70,8 +72,9 @@
     PostCell *cellTemp = (PostCell*)[nib objectAtIndex:0];
     [labelPostTextWeak setFrame:[[cellTemp labelPostText] frame]];
     [viewMainViewWeak setFrame:[[cellTemp viewMainView] frame]];
-    [imageViewPhotoWeak setImage:nil];
+    [imageViewPhotoWeak setImage:[UIImage imageNamed:@"avataar.png"]];
     [[imageViewPhotoWeak superview] setFrame:[[[cellTemp imageViewPhoto] superview] frame]];
+    [imageViewPhotoWeak setNeedsDisplay];
 }
 - (void)setupPostTextLabel
 {
@@ -110,7 +113,10 @@
     
     NSString *stringFullName = [NSString stringWithFormat:@"%@ %@", stringFName, stringLName];
     [labelNameWeak setText:stringFullName];
-    
+}
+- (void)setupPhoto
+{
+    NSMutableDictionary *mdUser = [mutableDictionaryPost objectForKey:@"user"];
     UIImage *imageAvataar = (UIImage*)[mdUser objectForKey:@"scaledImage"];
     if (imageAvataar)
     {
@@ -134,16 +140,18 @@
             
             image = [UIImage resizeImageWithRespectToHeight:image withTargetHeight:imageViewPhotoWeak.frame.size.height*1.2];
             [mdUser setObject:image forKey:@"scaledImage"];
-
+            
             dispatch_async(dispatch_get_main_queue(), ^{
                 
-                [imageViewPhotoWeak setImage:image];
+                [[self delegate] postsCellDidFinishDownloadingPicture:self];
+
                 UIActivityIndicatorView *aiv = (UIActivityIndicatorView*)[[imageViewPhotoWeak superview] viewWithTag:313131];
                 [aiv stopAnimating];
                 [aiv removeFromSuperview];
             });
         });
     }
+    
 }
 - (id)getPostCellFromNib
 {

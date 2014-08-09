@@ -12,10 +12,14 @@
 
 @interface ViewController ()
 <
-ServerCommunicationControllerDelegate
+ServerCommunicationControllerDelegate,
+PostsTableViewControllerDelegate
 >
 {
     PostsTableViewController *postsTableVC;
+    NSMutableDictionary *mutableDictionaryNextPageInfo;
+    NSString *stringFirstPageUrl;
+    BOOL shouldAppendResults;
 }
 @property (nonatomic, weak) IBOutlet UIView *viewPlaceHoler;
 @end
@@ -47,8 +51,12 @@ ServerCommunicationControllerDelegate
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    mutableDictionaryNextPageInfo = [NSMutableDictionary dictionary];
+    stringFirstPageUrl = @"http://unii-interview.herokuapp.com/api/v1/posts";
     [self initNavigationBar];
-    [self startLoadingDataFromServer];
+    
+    [self showActivityViewOnView:[self view]];
+    [self startLoadingDataFromUrl:stringFirstPageUrl];
 }
 
 - (void)initNavigationBar
@@ -65,18 +73,17 @@ ServerCommunicationControllerDelegate
         return;
     }
 }
-- (void)startLoadingDataFromServer
+- (void)showActivityViewOnView:(UIView*)viewSuperview
 {
-    [self showActivityViewOnView:[self view]];
-    NSString *urlString = @"http://unii-interview.herokuapp.com/api/v1/posts";
+    [viewSuperview addSubview:[UIView getActivityViewWithMessage:@"Loading! Please Wait." inSuperview:viewSuperview]];
+}
+- (void)startLoadingDataFromUrl:(NSString*)stringUrlString
+{
+    NSString *urlString = stringUrlString;
     ServerCommunicationController *scc = [[ServerCommunicationController alloc] init];
     [scc setDelegate:self];
     [scc setStringURLString:urlString];
     [scc sendRequestToServer];
-}
-- (void)showActivityViewOnView:(UIView*)viewSuperview
-{
-    [viewSuperview addSubview:[UIView getActivityViewWithMessage:@"Loading! Please Wait." inSuperview:viewSuperview]];
 }
 - (void)serverResponseFailedWithError:(NSMutableDictionary*)mutableDictionaryError
 {
@@ -89,6 +96,8 @@ ServerCommunicationControllerDelegate
     [UtilityMethods removeActivityViewFromView:[self view]];
     NSMutableDictionary *mdResponse = [mutableDictionaryResponse objectForKey:@"Response"];
     NSMutableDictionary *mdPosts = [mdResponse objectForKey:@"posts"];
+    
+    mutableDictionaryNextPageInfo = [mdPosts objectForKey:@"pagination"];
     NSMutableArray *mutableArrayPosts = (NSMutableArray*)[mdPosts objectForKey:@"data"];
     [self initPostsTableViewControllerWithData:mutableArrayPosts];
 }
@@ -98,7 +107,22 @@ ServerCommunicationControllerDelegate
     if (!postsTableVC)
     {
         postsTableVC = [[PostsTableViewController alloc] init];
+        [postsTableVC setDelegate:self];
     }
+    NSMutableArray *maCurrentArray = [postsTableVC mutableArrayPosts];
+    if (shouldAppendResults)
+    {
+        shouldAppendResults = NO;
+        [maCurrentArray addObjectsFromArray:mutableArrayPosts];
+        mutableArrayPosts = maCurrentArray;
+    }
+    else
+    {
+        [maCurrentArray removeAllObjects];
+        [maCurrentArray addObjectsFromArray:mutableArrayPosts];
+    }
+    
+    [postsTableVC setMutableArrayPosts:mutableArrayPosts];
     UIView *postsView = [viewPlaceHolerWeak viewWithTag:1212];
     if (!postsView)
     {
@@ -110,7 +134,41 @@ ServerCommunicationControllerDelegate
         [postsView setTag:1212];
         [postsView setFrame:CGRectMake(xx, yy, ww, hh)];
         [viewPlaceHolerWeak addSubview:postsView];
+        return;
     }
-    [postsTableVC setMutableArrayPosts:mutableArrayPosts];
+    [postsTableVC reloadTableViewData];
 }
+
+- (void)postsTableViewControllerDidRequestRefresh
+{
+    [self showActivityViewOnView:[self view]];
+    [self startLoadingDataFromUrl:stringFirstPageUrl];
+}
+- (void)postsTableViewControllerDidScrollToEndOfList
+{
+    NSInteger intCurrentPage = [mutableDictionaryNextPageInfo[@"current_page"] integerValue];
+    NSInteger intTotalPages = [mutableDictionaryNextPageInfo[@"total_pages"] integerValue];
+//    intTotalPages = 2;
+    if (intCurrentPage == intTotalPages)
+    {
+        [postsTableVC handleThatNoMorePagesToDisplay];
+        return;
+    }
+    
+    NSString *stringUrl = @"";
+    if ([[mutableDictionaryNextPageInfo allKeys] count])
+    {
+        stringUrl = [mutableDictionaryNextPageInfo objectForKey:@"next_page"];
+        stringUrl = stringUrl ? stringUrl : @"";
+        stringUrl = (![stringUrl isEqual:[NSNull null]]) ? stringUrl : @"";
+    }
+    
+    if ([stringUrl length])
+    {
+        shouldAppendResults = YES;
+        [self startLoadingDataFromUrl:stringUrl];
+    }
+    
+}
+
 @end

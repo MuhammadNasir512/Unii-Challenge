@@ -57,9 +57,9 @@
     
     float padding = 20.0f;
     float ww = viewSuperview.frame.size.width - 2*padding;
-    float hh = 50.0f;
+    float hh = 30.0f;
     float xx = padding;
-    float yy = (viewSuperview.frame.size.height - hh) / 3;
+    float yy = (viewSuperview.frame.size.height - hh) / 2;
     
     UILabel *labelMessage = [[UILabel alloc] init];
     [labelMessage setFrame:CGRectMake(xx, yy, ww, hh)];

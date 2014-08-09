@@ -8,11 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol PostsTableViewControllerDelegate <NSObject>
+- (void)postsTableViewControllerDidRequestRefresh;
+- (void)postsTableViewControllerDidScrollToEndOfList;
+@end
+
 @interface PostsTableViewController : UIViewController
 {
-    
+    id <PostsTableViewControllerDelegate> delegate;
 }
+@property (nonatomic, weak) id <PostsTableViewControllerDelegate> delegate;
 @property (nonatomic, strong) NSMutableArray *mutableArrayPosts;
 
 - (void)reloadTableViewData;
+- (void)handleThatNoMorePagesToDisplay;
 @end

@@ -8,11 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+@class PostCell;
+@protocol PostCellDelegate <NSObject>
+- (void)postsCellDidFinishDownloadingPicture:(PostCell*)postCell;
+@end
+
 @interface PostCell : UITableViewCell
 {
-    
+    id <PostCellDelegate> delegate;
 }
+@property (nonatomic, weak) id <PostCellDelegate> delegate;
 @property (nonatomic, strong) NSMutableDictionary *mutableDictionaryPost;
 - (CGFloat)getHeightForRow;
 - (void)setupCell;
+- (void)setupPhoto;
 @end

@@ -41,6 +41,8 @@
 		023A70DE1995909D0053F10E /* heart.png in Resources */ = {isa = PBXBuildFile; fileRef = 023A70DA1995909D0053F10E /* heart.png */; };
 		023A70E11995D0820053F10E /* UIImage+ResizedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 023A70E01995D0820053F10E /* UIImage+ResizedImage.m */; };
 		023A70E21995D0820053F10E /* UIImage+ResizedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 023A70E01995D0820053F10E /* UIImage+ResizedImage.m */; };
+		023A70E41995D7290053F10E /* avataar.png in Resources */ = {isa = PBXBuildFile; fileRef = 023A70E31995D7290053F10E /* avataar.png */; };
+		023A70E51995D7290053F10E /* avataar.png in Resources */ = {isa = PBXBuildFile; fileRef = 023A70E31995D7290053F10E /* avataar.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +91,7 @@
 		023A70DA1995909D0053F10E /* heart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = heart.png; sourceTree = "<group>"; };
 		023A70DF1995D0820053F10E /* UIImage+ResizedImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ResizedImage.h"; sourceTree = "<group>"; };
 		023A70E01995D0820053F10E /* UIImage+ResizedImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ResizedImage.m"; sourceTree = "<group>"; };
+		023A70E31995D7290053F10E /* avataar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = avataar.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -246,6 +249,7 @@
 		023A70D81995909D0053F10E /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				023A70E31995D7290053F10E /* avataar.png */,
 				023A70D91995909D0053F10E /* comment.png */,
 				023A70DA1995909D0053F10E /* heart.png */,
 			);
@@ -334,6 +338,7 @@
 				023A70D6199584100053F10E /* PostCell.xib in Resources */,
 				023A70DD1995909D0053F10E /* heart.png in Resources */,
 				023A70B21995517C0053F10E /* ViewController.xib in Resources */,
+				023A70E41995D7290053F10E /* avataar.png in Resources */,
 				023A7087199550930053F10E /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -344,6 +349,7 @@
 			files = (
 				023A70A6199550940053F10E /* InfoPlist.strings in Resources */,
 				023A70DC1995909D0053F10E /* comment.png in Resources */,
+				023A70E51995D7290053F10E /* avataar.png in Resources */,
 				023A70DE1995909D0053F10E /* heart.png in Resources */,
 				023A70D7199584100053F10E /* PostCell.xib in Resources */,
 				023A70CA19956FC30053F10E /* PostsTableViewController.xib in Resources */,
