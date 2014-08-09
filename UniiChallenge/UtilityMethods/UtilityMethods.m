@@ -96,4 +96,31 @@
     [viewToAdjust setFrame:CGRectMake(xx, yy, ww, hh)];
 }
 
++ (UIImage*)resizeImageWithRespectToHeight:(UIImage*)originalImage withTargetHeight:(float)targetHeight
+{
+    UIImage *resizedImage;
+    CGSize sizeOfOriginalImage = [originalImage size];
+    
+    float scale = 0.0;
+    float originalImageWidth = (float)sizeOfOriginalImage.width;
+    float originalImageHeight = (float)sizeOfOriginalImage.height;
+    
+    if (originalImageHeight > targetHeight)
+    {
+        scale = targetHeight/originalImageHeight;
+    }
+    else
+    {
+        scale = originalImageHeight/targetHeight;
+    }
+    
+    CGSize destinationImageSize = CGSizeMake(originalImageWidth*scale, originalImageHeight*scale);
+    //UIGraphicsBeginImageContext(destinationImageSize);
+    UIGraphicsBeginImageContext(destinationImageSize);
+    [originalImage drawInRect:CGRectMake(0,0,destinationImageSize.width, destinationImageSize.height)];
+    resizedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return resizedImage;
+}
+
 @end

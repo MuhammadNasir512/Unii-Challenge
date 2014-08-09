@@ -58,11 +58,21 @@
 
 - (void)setupCell
 {
-    [self resetViews];
     [[viewMainViewWeak layer] setCornerRadius:5.0f];
+    [self resetViews];
     [self setupPostTextLabel];
+    [self adjustSizeForMainView];
+    [self setupNameLikesAndCommentsInfo];
 }
-
+- (void)resetViews
+{
+    NSArray *nib = [self getPostCellFromNib];
+    PostCell *cellTemp = (PostCell*)[nib objectAtIndex:0];
+    [labelPostTextWeak setFrame:[[cellTemp labelPostText] frame]];
+    [viewMainViewWeak setFrame:[[cellTemp viewMainView] frame]];
+    [imageViewPhotoWeak setImage:nil];
+    [[imageViewPhotoWeak superview] setFrame:[[[cellTemp imageViewPhoto] superview] frame]];
+}
 - (void)setupPostTextLabel
 {
     NSString *stringPostText = [mutableDictionaryPost objectForKey:@"content"];
@@ -72,21 +82,67 @@
     CGSize sizeRecommended = [UtilityMethods getRecommendedSizeForLabel:labelPostTextWeak];
     [UtilityMethods createFrameForView:labelPostTextWeak withSize:sizeRecommended];
     [UtilityMethods adjustFrameVerticallyForView:[imageViewPhotoWeak superview] toShowBelowView:labelPostTextWeak withPadding:padding];
-    
+}
+- (void)adjustSizeForMainView
+{
     float hh = imageViewPhotoWeak.superview.frame.origin.y + imageViewPhotoWeak.superview.frame.size.height + labelPostTextWeak.frame.origin.y;
     CGRect rect = [viewMainViewWeak frame];
     rect.size.height = hh;
     [viewMainViewWeak setFrame:rect];
 }
-
-- (void)resetViews
+- (void)setupNameLikesAndCommentsInfo
 {
-    NSArray *nib = [self getPostCellFromNib];
-    PostCell *cellTemp = (PostCell*)[nib objectAtIndex:0];
-    [labelPostTextWeak setFrame:[[cellTemp labelPostText] frame]];
-    [viewMainViewWeak setFrame:[[cellTemp viewMainView] frame]];
-    [[imageViewPhotoWeak superview] setFrame:[[[cellTemp imageViewPhoto] superview] frame]];
+    NSInteger intComments = [[mutableDictionaryPost objectForKey:@"comment_count"] integerValue];
+    intComments = intComments ? intComments : 0;
+    [labelCommentsWeak setText:[NSString stringWithFormat:@"%d", intComments]];
     
+    NSInteger intLikes = [[mutableDictionaryPost objectForKey:@"like_count"] integerValue];
+    intLikes = intLikes ? intLikes : 0;
+    [labelLikesWeak setText:[NSString stringWithFormat:@"%d", intLikes]];
+    
+    NSMutableDictionary *mdUser = [mutableDictionaryPost objectForKey:@"user"];
+    NSString *stringFName = mdUser[@"first_name"];
+    stringFName = stringFName ? stringFName : @"";
+    
+    NSString *stringLName = mdUser[@"last_name"];
+    stringLName = stringLName ? stringLName : @"";
+    stringLName = ([stringLName length])?[[stringLName substringToIndex:1] uppercaseString]:stringLName;
+    
+    NSString *stringFullName = [NSString stringWithFormat:@"%@ %@", stringFName, stringLName];
+    [labelNameWeak setText:stringFullName];
+    
+    UIImage *imageAvataar = (UIImage*)[mdUser objectForKey:@"scaledImage"];
+    if (imageAvataar)
+    {
+        [imageViewPhotoWeak setImage:imageAvataar];
+//        NSLog(@"Found:%f", imageAvataar.size.height);
+    }
+    else
+    {
+        UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        [aiv setFrame:[imageViewPhotoWeak frame]];
+        [aiv setTag:313131];
+        [aiv startAnimating];
+        [[imageViewPhotoWeak superview] addSubview:aiv];
+        
+        NSString *stringPhotoUrl = [mdUser objectForKey:@"avatar"];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            
+            NSData *urlData = [NSData dataWithContentsOfURL:[NSURL URLWithString:stringPhotoUrl]];
+            UIImage *image = [[UIImage alloc] initWithData:urlData];
+            
+            image = [UtilityMethods resizeImageWithRespectToHeight:image withTargetHeight:imageViewPhotoWeak.frame.size.height*1.2];
+            [mdUser setObject:image forKey:@"scaledImage"];
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                [imageViewPhotoWeak setImage:image];
+                UIActivityIndicatorView *aiv = (UIActivityIndicatorView*)[[imageViewPhotoWeak superview] viewWithTag:313131];
+                [aiv stopAnimating];
+                [aiv removeFromSuperview];
+            });
+        });
+    }
 }
 - (id)getPostCellFromNib
 {

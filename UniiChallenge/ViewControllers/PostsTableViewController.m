@@ -105,7 +105,6 @@ UITableViewDelegate
     {
         [tableView registerNib:[UINib nibWithNibName:@"PostCell" bundle:nil] forCellReuseIdentifier:StringPostCell];
         cell = [tableView dequeueReusableCellWithIdentifier:StringPostCell];
-        
     }
 
     NSMutableDictionary *mdOnePost = mutableArrayPosts[[indexPath row]];
