@@ -20,6 +20,7 @@ PostsTableViewControllerDelegate
     NSMutableDictionary *mutableDictionaryNextPageInfo;
     NSString *stringFirstPageUrl;
     BOOL shouldAppendResults;
+    BOOL isThisVCAlreadyLoaded;
 }
 @property (nonatomic, weak) IBOutlet UIView *viewPlaceHoler;
 @end
@@ -103,6 +104,7 @@ PostsTableViewControllerDelegate
     mutableDictionaryNextPageInfo = [mdPosts objectForKey:@"pagination"];
     NSMutableArray *mutableArrayPosts = (NSMutableArray*)[mdPosts objectForKey:@"data"];
     [self initPostsTableViewControllerWithData:mutableArrayPosts];
+    isThisVCAlreadyLoaded = YES;
 }
 
 - (void)initPostsTableViewControllerWithData:(NSMutableArray*)mutableArrayPosts
@@ -173,5 +175,12 @@ PostsTableViewControllerDelegate
     }
     
 }
-
+- (void)applicationBecameActive
+{
+    if (isThisVCAlreadyLoaded)
+    {
+        [self showActivityViewOnView:[self view]];
+        [self startLoadingDataFromUrl:stringFirstPageUrl];
+    }
+}
 @end

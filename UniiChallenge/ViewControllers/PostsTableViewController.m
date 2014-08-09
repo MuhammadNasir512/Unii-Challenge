@@ -232,7 +232,6 @@ PostCellDelegate
     NSIndexPath *indexPath = [tableViewPostsWeak indexPathForCell:postCell];
     if ([[tableViewPostsWeak indexPathsForVisibleRows] containsObject:indexPath])
     {
-        NSLog(@"Dowloaded:%@", indexPath);
         [postCell setupPhoto];
     }
 }

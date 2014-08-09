@@ -76,23 +76,7 @@
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    //////////////////////////
-    //////////////////////////
-    //////////////////////////
-    /*
-    NSError *errrr = [NSError errorWithDomain:@"sdsd" code:1212 userInfo:[NSDictionary dictionary]];
-    NSMutableDictionary *mdError = [[NSMutableDictionary alloc] init];
-    [mdError setObject:errrr forKey:@"Error"];
-    [mdError setObject:stringURLString forKey:@"stringURLString"];
-    [self dispatchServerResponseFailedWithError:mdError];
-    return;
-     */
-    //////////////////////////
-    //////////////////////////
-    //////////////////////////
-
-    NSString *string = [[NSString alloc] initWithData:dataFromServerAsResponse encoding:NSUTF8StringEncoding];
-    NSLog(@"SERVER RESPONSE: %@", string);
+//    NSString *string = [[NSString alloc] initWithData:dataFromServerAsResponse encoding:NSUTF8StringEncoding];
     
     NSError *jsonParserError = nil;
     NSDictionary *dictionaryJsonResponseObject =

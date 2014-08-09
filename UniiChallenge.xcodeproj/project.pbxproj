@@ -13,14 +13,12 @@
 		023A7087199550930053F10E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 023A7085199550930053F10E /* InfoPlist.strings */; };
 		023A7089199550930053F10E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 023A7088199550930053F10E /* main.m */; };
 		023A708D199550930053F10E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 023A708C199550930053F10E /* AppDelegate.m */; };
-		023A7093199550930053F10E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 023A7092199550930053F10E /* ViewController.m */; };
 		023A7095199550930053F10E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 023A7094199550930053F10E /* Images.xcassets */; };
 		023A709C199550930053F10E /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 023A709B199550930053F10E /* XCTest.framework */; };
 		023A709D199550930053F10E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 023A707C199550930053F10E /* Foundation.framework */; };
 		023A709E199550930053F10E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 023A7080199550930053F10E /* UIKit.framework */; };
 		023A70A6199550940053F10E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 023A70A4199550940053F10E /* InfoPlist.strings */; };
 		023A70A8199550940053F10E /* UniiChallengeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 023A70A7199550940053F10E /* UniiChallengeTests.m */; };
-		023A70B21995517C0053F10E /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 023A70B11995517C0053F10E /* ViewController.xib */; };
 		023A70BB199554DD0053F10E /* ServerCommunicationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 023A70BA199554DD0053F10E /* ServerCommunicationController.m */; };
 		023A70BC199554DD0053F10E /* ServerCommunicationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 023A70BA199554DD0053F10E /* ServerCommunicationController.m */; };
 		023A70C0199561CF0053F10E /* UIView+ErrorFeedbackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 023A70BF199561CF0053F10E /* UIView+ErrorFeedbackView.m */; };
@@ -43,6 +41,10 @@
 		023A70E21995D0820053F10E /* UIImage+ResizedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 023A70E01995D0820053F10E /* UIImage+ResizedImage.m */; };
 		023A70E41995D7290053F10E /* avataar.png in Resources */ = {isa = PBXBuildFile; fileRef = 023A70E31995D7290053F10E /* avataar.png */; };
 		023A70E51995D7290053F10E /* avataar.png in Resources */ = {isa = PBXBuildFile; fileRef = 023A70E31995D7290053F10E /* avataar.png */; };
+		023A70E9199681870053F10E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 023A70E7199681870053F10E /* ViewController.m */; };
+		023A70EA199681870053F10E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 023A70E7199681870053F10E /* ViewController.m */; };
+		023A70EB199681870053F10E /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 023A70E8199681870053F10E /* ViewController.xib */; };
+		023A70EC199681870053F10E /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 023A70E8199681870053F10E /* ViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,15 +68,12 @@
 		023A708A199550930053F10E /* UniiChallenge-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UniiChallenge-Prefix.pch"; sourceTree = "<group>"; };
 		023A708B199550930053F10E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		023A708C199550930053F10E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		023A7091199550930053F10E /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		023A7092199550930053F10E /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		023A7094199550930053F10E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		023A709A199550930053F10E /* UniiChallengeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UniiChallengeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		023A709B199550930053F10E /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		023A70A3199550940053F10E /* UniiChallengeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "UniiChallengeTests-Info.plist"; sourceTree = "<group>"; };
 		023A70A5199550940053F10E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		023A70A7199550940053F10E /* UniiChallengeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UniiChallengeTests.m; sourceTree = "<group>"; };
-		023A70B11995517C0053F10E /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		023A70B9199554DD0053F10E /* ServerCommunicationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerCommunicationController.h; sourceTree = "<group>"; };
 		023A70BA199554DD0053F10E /* ServerCommunicationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerCommunicationController.m; sourceTree = "<group>"; };
 		023A70BE199561CF0053F10E /* UIView+ErrorFeedbackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ErrorFeedbackView.h"; sourceTree = "<group>"; };
@@ -92,6 +91,9 @@
 		023A70DF1995D0820053F10E /* UIImage+ResizedImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ResizedImage.h"; sourceTree = "<group>"; };
 		023A70E01995D0820053F10E /* UIImage+ResizedImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ResizedImage.m"; sourceTree = "<group>"; };
 		023A70E31995D7290053F10E /* avataar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = avataar.png; sourceTree = "<group>"; };
+		023A70E6199681870053F10E /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		023A70E7199681870053F10E /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		023A70E8199681870053F10E /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,9 +161,6 @@
 				023A70B8199554A00053F10E /* Classes */,
 				023A708B199550930053F10E /* AppDelegate.h */,
 				023A708C199550930053F10E /* AppDelegate.m */,
-				023A7091199550930053F10E /* ViewController.h */,
-				023A7092199550930053F10E /* ViewController.m */,
-				023A70B11995517C0053F10E /* ViewController.xib */,
 				023A7094199550930053F10E /* Images.xcassets */,
 				023A7083199550930053F10E /* Supporting Files */,
 			);
@@ -223,6 +222,9 @@
 				023A70C419956F820053F10E /* PostsTableViewController.h */,
 				023A70C519956F820053F10E /* PostsTableViewController.m */,
 				023A70C819956FC30053F10E /* PostsTableViewController.xib */,
+				023A70E6199681870053F10E /* ViewController.h */,
+				023A70E7199681870053F10E /* ViewController.m */,
+				023A70E8199681870053F10E /* ViewController.xib */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -334,10 +336,10 @@
 			files = (
 				023A7095199550930053F10E /* Images.xcassets in Resources */,
 				023A70DB1995909D0053F10E /* comment.png in Resources */,
+				023A70EB199681870053F10E /* ViewController.xib in Resources */,
 				023A70C919956FC30053F10E /* PostsTableViewController.xib in Resources */,
 				023A70D6199584100053F10E /* PostCell.xib in Resources */,
 				023A70DD1995909D0053F10E /* heart.png in Resources */,
-				023A70B21995517C0053F10E /* ViewController.xib in Resources */,
 				023A70E41995D7290053F10E /* avataar.png in Resources */,
 				023A7087199550930053F10E /* InfoPlist.strings in Resources */,
 			);
@@ -347,6 +349,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				023A70EC199681870053F10E /* ViewController.xib in Resources */,
 				023A70A6199550940053F10E /* InfoPlist.strings in Resources */,
 				023A70DC1995909D0053F10E /* comment.png in Resources */,
 				023A70E51995D7290053F10E /* avataar.png in Resources */,
@@ -363,8 +366,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				023A70E9199681870053F10E /* ViewController.m in Sources */,
 				023A70C0199561CF0053F10E /* UIView+ErrorFeedbackView.m in Sources */,
-				023A7093199550930053F10E /* ViewController.m in Sources */,
 				023A708D199550930053F10E /* AppDelegate.m in Sources */,
 				023A70E11995D0820053F10E /* UIImage+ResizedImage.m in Sources */,
 				023A70D3199583D10053F10E /* PostCell.m in Sources */,
@@ -381,6 +384,7 @@
 			files = (
 				023A70CF199572800053F10E /* UtilityMethods.m in Sources */,
 				023A70E21995D0820053F10E /* UIImage+ResizedImage.m in Sources */,
+				023A70EA199681870053F10E /* ViewController.m in Sources */,
 				023A70A8199550940053F10E /* UniiChallengeTests.m in Sources */,
 				023A70C719956F820053F10E /* PostsTableViewController.m in Sources */,
 				023A70C1199561CF0053F10E /* UIView+ErrorFeedbackView.m in Sources */,
