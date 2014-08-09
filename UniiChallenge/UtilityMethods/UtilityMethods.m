@@ -96,4 +96,27 @@
     [viewToAdjust setFrame:CGRectMake(xx, yy, ww, hh)];
 }
 
++ (void)createNavigationBarTitleLabelWithText:(NSString*)stringText withNavigationBar:(UINavigationBar*)navigationBar withNavigationItem:(UINavigationItem*)navigationItem
+{
+    CGFloat navBarW = navigationBar.frame.size.width;
+    CGFloat navBarH = navigationBar.frame.size.height;
+    CGFloat titleViewW = navBarW/2;
+    float xx = (navBarW-titleViewW)/2;
+    float yy = 0.0f;
+    float ww = titleViewW;
+    float hh = navBarH;
+    
+    UIFont *fontNameText = [UIFont fontWithName:@"Avenir-Medium" size:18.0];
+    UILabel *labelTitleView = [[UILabel alloc] init];
+    [labelTitleView setFrame:CGRectMake(xx, yy, ww, hh)];
+    [labelTitleView setText:stringText];
+    [labelTitleView setFont:fontNameText];
+    [labelTitleView setTag:1212];
+    [labelTitleView setTextColor:[UIColor whiteColor]];
+    [labelTitleView setTextAlignment:NSTextAlignmentCenter];
+    [labelTitleView setBackgroundColor:[UIColor clearColor]];
+    [navigationBar addSubview:labelTitleView];
+    [navigationItem setTitleView:labelTitleView];
+}
+
 @end

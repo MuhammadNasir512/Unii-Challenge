@@ -18,4 +18,5 @@
 + (CGSize)getRecommendedSizeForLabel:(UILabel*)label;
 + (void)createFrameForView:(UIView*)viewToAdjust withSize:(CGSize)sizeRecommended;
 + (void)adjustFrameVerticallyForView:(UIView*)viewToAdjust toShowBelowView:(UIView*)viewAbove withPadding:(CGFloat)padding;
++ (void)createNavigationBarTitleLabelWithText:(NSString*)stringText withNavigationBar:(UINavigationBar*)navigationBar withNavigationItem:(UINavigationItem*)navigationItem;
 @end

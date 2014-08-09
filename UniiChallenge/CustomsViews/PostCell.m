@@ -46,7 +46,7 @@
 }
 - (void)awakeFromNib
 {
-    padding = 5.0f;
+    padding = 20.0f;
 }
 - (void)layoutSubviews
 {
@@ -59,7 +59,7 @@
 
 - (void)setupCell
 {
-    [[viewMainViewWeak layer] setCornerRadius:5.0f];
+    [[viewMainViewWeak layer] setCornerRadius:3.0f];
     [self resetViews];
     [self setupPostTextLabel];
     [self adjustSizeForMainView];
@@ -74,7 +74,11 @@
     [viewMainViewWeak setFrame:[[cellTemp viewMainView] frame]];
     [imageViewPhotoWeak setImage:[UIImage imageNamed:@"avataar.png"]];
     [[imageViewPhotoWeak superview] setFrame:[[[cellTemp imageViewPhoto] superview] frame]];
-    [imageViewPhotoWeak setNeedsDisplay];
+    
+    if (![[imageViewPhotoWeak layer] cornerRadius])
+    {
+        [[imageViewPhotoWeak layer] setCornerRadius:3.0f];
+    }
 }
 - (void)setupPostTextLabel
 {

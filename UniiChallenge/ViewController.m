@@ -62,14 +62,17 @@ PostsTableViewControllerDelegate
 - (void)initNavigationBar
 {
     UINavigationBar *nBar = [[self navigationController] navigationBar];
+    [UtilityMethods createNavigationBarTitleLabelWithText:@"POSTS" withNavigationBar:nBar withNavigationItem:[self navigationItem]];
+
+    UIColor *colorBarTint = [UIColor colorWithRed:41.0f/256.0f green:122.0f/256.0f blue:204.0f/256.0f alpha:1.0f];
     if ([nBar respondsToSelector:@selector(setBarTintColor:)])
     {
-        [nBar setBarTintColor:[UIColor blueColor]];
+        [nBar setBarTintColor:colorBarTint];
         return;
     }
     if ([nBar respondsToSelector:@selector(setTintColor:)])
     {
-        [nBar setTintColor:[UIColor blueColor]];
+        [nBar setTintColor:colorBarTint];
         return;
     }
 }

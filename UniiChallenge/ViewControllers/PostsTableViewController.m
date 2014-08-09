@@ -48,7 +48,7 @@ PostCellDelegate
 {
     [super viewDidLayoutSubviews];
     
-    float padding = 10.0f;
+    float padding = 0.0f;
     float xx = tableViewPostsWeak.frame.origin.x;
     float yy = padding;
     float ww = tableViewPostsWeak.frame.size.width;
@@ -61,7 +61,7 @@ PostCellDelegate
     [super viewDidLoad];
     // following variable switches whether to load more posts automatically when reach the end of the list
     // or like to tap last cell to load more post
-    loadMoreVenuesAutomatically = YES;
+    loadMoreVenuesAutomatically = NO;
 
     [self initTableView];
 }
@@ -142,7 +142,7 @@ PostCellDelegate
         }
         else
         {
-            stringLoadingCellText = @"Tap here to load more posts.";
+            stringLoadingCellText = @"Tap here to load more posts!";
         }
         
         UITableViewCell *cellLoading = [tableView dequeueReusableCellWithIdentifier:StringLoadingCell];
@@ -152,21 +152,26 @@ PostCellDelegate
             [cellLoading setSelectionStyle:UITableViewCellSelectionStyleNone];
             [cellLoading setBackgroundColor:[UIColor clearColor]];
             
+            CGFloat padding = 10.0f;
             CGRect rect = [cellLoading frame];
-            rect.size.height = loadingCellHeight;
+            rect.origin.x = padding;
+            rect.origin.y = padding;
+            rect.size.height = loadingCellHeight-2*padding;
+            rect.size.width = tableView.frame.size.width-2*padding;
             
             UILabel *labelLoadingText = [[UILabel alloc] init];
             [labelLoadingText setFrame:rect];
             [labelLoadingText setTag:9292];
-            [labelLoadingText setBackgroundColor:[UIColor clearColor]];
-            [labelLoadingText setTextColor:[UIColor whiteColor]];
+            [labelLoadingText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:18.0f]];
+            [labelLoadingText setBackgroundColor:[UIColor whiteColor]];
+            [labelLoadingText setTextColor:[UIColor blackColor]];
             [labelLoadingText setTextAlignment:NSTextAlignmentCenter];
             [labelLoadingText setNumberOfLines:0];
             [labelLoadingText setText:stringLoadingCellText];
+            [labelLoadingText setClipsToBounds:YES];
+            [[labelLoadingText layer] setCornerRadius:3.0f];
             [cellLoading addSubview:labelLoadingText];
         }
-        [[cellLoading contentView] setBackgroundColor:[UIColor blackColor]];
-        [[cellLoading contentView] setAlpha:0.75];
         return cellLoading;
         
     }
