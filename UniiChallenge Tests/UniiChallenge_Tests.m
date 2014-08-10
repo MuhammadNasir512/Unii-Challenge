@@ -1,18 +1,17 @@
 //
-//  UniiChallengeTests.m
-//  UniiChallengeTests
+//  UniiChallenge_Tests.m
+//  UniiChallenge Tests
 //
-//  Created by Muhammad Nasir on 08/08/2014.
+//  Created by Muhammad Nasir on 10/08/2014.
 //  Copyright (c) 2014 Muhammad Nasir. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
 
-@interface UniiChallengeTests : XCTestCase
-
+@interface UniiChallenge_Tests : XCTestCase
 @end
 
-@implementation UniiChallengeTests
+@implementation UniiChallenge_Tests
 
 - (void)setUp
 {
@@ -28,7 +27,5 @@
 
 - (void)testExample
 {
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
 }
-
 @end

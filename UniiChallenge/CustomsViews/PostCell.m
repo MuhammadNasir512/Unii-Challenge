@@ -101,11 +101,11 @@
 {
     NSInteger intComments = [[mutableDictionaryPost objectForKey:@"comment_count"] integerValue];
     intComments = intComments ? intComments : 0;
-    [labelCommentsWeak setText:[NSString stringWithFormat:@"%d", intComments]];
+    [labelCommentsWeak setText:[NSString stringWithFormat:@"%ld", (long)intComments]];
     
     NSInteger intLikes = [[mutableDictionaryPost objectForKey:@"like_count"] integerValue];
     intLikes = intLikes ? intLikes : 0;
-    [labelLikesWeak setText:[NSString stringWithFormat:@"%d", intLikes]];
+    [labelLikesWeak setText:[NSString stringWithFormat:@"%ld", (long)intLikes]];
     
     NSMutableDictionary *mdUser = [mutableDictionaryPost objectForKey:@"user"];
     NSString *stringFName = mdUser[@"first_name"];

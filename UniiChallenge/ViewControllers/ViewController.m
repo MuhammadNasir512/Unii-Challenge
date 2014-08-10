@@ -23,11 +23,15 @@ PostsTableViewControllerDelegate
     BOOL isThisVCAlreadyLoaded;
 }
 @property (nonatomic, weak) IBOutlet UIView *viewPlaceHoler;
+@property (nonatomic, strong) NSString *stringFirstPageUrl;
+@property (nonatomic, strong) NSMutableDictionary *mutableDictionaryNextPageInfo;
 @end
 
 @implementation ViewController
 
 @synthesize viewPlaceHoler = viewPlaceHolerWeak;
+@synthesize stringFirstPageUrl;
+@synthesize mutableDictionaryNextPageInfo;
 
 - (void)didReceiveMemoryWarning
 {
@@ -52,14 +56,18 @@ PostsTableViewControllerDelegate
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    mutableDictionaryNextPageInfo = [NSMutableDictionary dictionary];
-    stringFirstPageUrl = @"http://unii-interview.herokuapp.com/api/v1/posts";
-    [self initNavigationBar];
     
+    [self initObjects];
     [self showActivityViewOnView:[self view]];
     [self startLoadingDataFromUrl:stringFirstPageUrl];
 }
 
+- (void)initObjects
+{
+    mutableDictionaryNextPageInfo = [NSMutableDictionary dictionary];
+    stringFirstPageUrl = @"http://unii-interview.herokuapp.com/api/v1/posts";
+    [self initNavigationBar];
+}
 - (void)initNavigationBar
 {
     UINavigationBar *nBar = [[self navigationController] navigationBar];

@@ -45,7 +45,7 @@
 
 - (NSURLRequest *)connection: (NSURLConnection *)inConnection
              willSendRequest: (NSURLRequest *)inRequest
-            redirectResponse: (NSURLResponse *)inRedirectResponse;
+            redirectResponse: (NSURLResponse *)inRedirectResponse
 {
     if (inRedirectResponse)
     {
