@@ -15,6 +15,8 @@
 		0222351119977F6A00151D80 /* ViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0222351019977F6A00151D80 /* ViewControllerTests.m */; };
 		0228DBFA199EAD9D005FAED6 /* UNIIPostModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0228DBF9199EAD9D005FAED6 /* UNIIPostModel.m */; };
 		0228DBFB199EAD9D005FAED6 /* UNIIPostModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0228DBF9199EAD9D005FAED6 /* UNIIPostModel.m */; };
+		0228DBFE199EC0B1005FAED6 /* UNIIPostUserInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0228DBFD199EC0B1005FAED6 /* UNIIPostUserInfoModel.m */; };
+		0228DBFF199EC0B1005FAED6 /* UNIIPostUserInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0228DBFD199EC0B1005FAED6 /* UNIIPostUserInfoModel.m */; };
 		023A707D199550930053F10E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 023A707C199550930053F10E /* Foundation.framework */; };
 		023A707F199550930053F10E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 023A707E199550930053F10E /* CoreGraphics.framework */; };
 		023A7081199550930053F10E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 023A7080199550930053F10E /* UIKit.framework */; };
@@ -57,6 +59,8 @@
 		022235131997847D00151D80 /* ViewController_ViewControllerExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController_ViewControllerExtension.h; sourceTree = "<group>"; };
 		0228DBF8199EAD9D005FAED6 /* UNIIPostModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UNIIPostModel.h; sourceTree = "<group>"; };
 		0228DBF9199EAD9D005FAED6 /* UNIIPostModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UNIIPostModel.m; sourceTree = "<group>"; };
+		0228DBFC199EC0B1005FAED6 /* UNIIPostUserInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UNIIPostUserInfoModel.h; sourceTree = "<group>"; };
+		0228DBFD199EC0B1005FAED6 /* UNIIPostUserInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UNIIPostUserInfoModel.m; sourceTree = "<group>"; };
 		023A7079199550930053F10E /* UniiChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UniiChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		023A707C199550930053F10E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		023A707E199550930053F10E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -148,6 +152,8 @@
 			children = (
 				0228DBF8199EAD9D005FAED6 /* UNIIPostModel.h */,
 				0228DBF9199EAD9D005FAED6 /* UNIIPostModel.m */,
+				0228DBFC199EC0B1005FAED6 /* UNIIPostUserInfoModel.h */,
+				0228DBFD199EC0B1005FAED6 /* UNIIPostUserInfoModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -377,6 +383,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0222351119977F6A00151D80 /* ViewControllerTests.m in Sources */,
+				0228DBFF199EC0B1005FAED6 /* UNIIPostUserInfoModel.m in Sources */,
 				022235061997634C00151D80 /* UniiChallenge_Tests.m in Sources */,
 				0228DBFB199EAD9D005FAED6 /* UNIIPostModel.m in Sources */,
 			);
@@ -393,6 +400,7 @@
 				0228DBFA199EAD9D005FAED6 /* UNIIPostModel.m in Sources */,
 				023A70D3199583D10053F10E /* PostCell.m in Sources */,
 				023A70CE199572800053F10E /* UtilityMethods.m in Sources */,
+				0228DBFE199EC0B1005FAED6 /* UNIIPostUserInfoModel.m in Sources */,
 				023A70C619956F820053F10E /* PostsTableViewController.m in Sources */,
 				023A7089199550930053F10E /* main.m in Sources */,
 				023A70BB199554DD0053F10E /* ServerCommunicationController.m in Sources */,

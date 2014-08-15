@@ -8,9 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+@class UNIIPostUserInfoModel;
 @interface UNIIPostModel : NSObject <NSCoding>
 
-@property (nonatomic, readonly, copy) NSMutableDictionary *mdUserInfo;
+@property (nonatomic, readonly, copy) UNIIPostUserInfoModel *uniPostUserInfo;
 @property (nonatomic, readonly, copy) NSString *stringPostText;
 @property (nonatomic, readonly, assign) NSInteger intCommentsCount;
 @property (nonatomic, readonly, assign) NSInteger intLikesCount;
@@ -18,6 +19,6 @@
 - (id)initWithPostText:(NSString*)stringPostText
           commentCount:(NSInteger)intCommentsCount
             likesCount:(NSInteger)intLikesCount
-              userInfo:(NSMutableDictionary*)mdUserInfo;
+              userInfo:(UNIIPostUserInfoModel*)uniPostUserInfo;
 
 @end

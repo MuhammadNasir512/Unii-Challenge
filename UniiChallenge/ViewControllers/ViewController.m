@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "ServerCommunicationController.h"
 #import "PostsTableViewController.h"
+#import "UNIIPostUserInfoModel.h"
 #import "UNIIPostModel.h"
 
 #pragma mark - Private Interface
@@ -203,17 +204,38 @@ PostsTableViewControllerDelegate
     NSMutableArray *maDataToRetun = [NSMutableArray array];
     [mutableArrayPosts enumerateObjectsUsingBlock:^(NSMutableDictionary *mdOneItem, NSUInteger index, BOOL *stop) {
         
+        // Post text contents
         NSString *stringPostText = [mdOneItem objectForKey:@"content"];
         stringPostText = (stringPostText && ![stringPostText isEqual:[NSNull null]])? stringPostText : @"";
+        
+        // Comments and likes count
         NSInteger intCommentsCount = [[mdOneItem objectForKey:@"comment_count"] integerValue];
         NSInteger intLikesCount = [[mdOneItem objectForKey:@"like_count"] integerValue];
+
+        // User Info Dictionary
         NSMutableDictionary *mdUserInfo = [mdOneItem objectForKey:@"user"];
         mdUserInfo = (mdUserInfo && ![mdUserInfo isEqual:[NSNull null]])? mdUserInfo : [NSMutableDictionary dictionary];
         
+        // First NAme
+        NSString *stringFirstName = [mdUserInfo objectForKey:@"first_name"];
+        stringFirstName = (stringFirstName && ![stringFirstName isEqual:[NSNull null]])? stringFirstName : @"";
+        
+        // Last Name
+        NSString *stringLastName = [mdUserInfo objectForKey:@"last_name"];
+        stringLastName = (stringLastName && ![stringLastName isEqual:[NSNull null]])? stringLastName : @"";
+        
+        // Image url string
+        NSString *stringImageUrl = [mdUserInfo objectForKey:@"avatar"];
+        stringImageUrl = (stringImageUrl && ![stringImageUrl isEqual:[NSNull null]])? stringImageUrl : @"";
+        
+        // Creating user info model object
+        UNIIPostUserInfoModel *postModelUserInfo = [[UNIIPostUserInfoModel alloc] initWithFirstName:stringFirstName lastName:stringLastName imageUrl:stringImageUrl];
+        
+        // Creating post model object
         UNIIPostModel *postModel = [[UNIIPostModel alloc] initWithPostText:stringPostText
                                                               commentCount:intCommentsCount
                                                                 likesCount:intLikesCount
-                                                                  userInfo:mdUserInfo];
+                                                                  userInfo:postModelUserInfo];
         [maDataToRetun addObject:postModel];
     }];
     return maDataToRetun;

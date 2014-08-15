@@ -8,6 +8,7 @@
 
 #import "PostCell.h"
 #import "UNIIPostModel.h"
+#import "UNIIPostUserInfoModel.h"
 
 #pragma mark - Private Interface
 @interface PostCell ()
@@ -96,12 +97,10 @@
     [[self labelComments] setText:[NSString stringWithFormat:@"%ld", (long)[uniiPostModel intCommentsCount]]];
     [[self labelLikes] setText:[NSString stringWithFormat:@"%ld", (long)[uniiPostModel intLikesCount]]];
     
-    NSMutableDictionary *mdUser = [uniiPostModel mdUserInfo];
-    NSString *stringFName = mdUser[@"first_name"];
-    stringFName = stringFName ? stringFName : @"";
+    UNIIPostUserInfoModel *uniPostUserInfo = (UNIIPostUserInfoModel*)[uniiPostModel uniPostUserInfo];
+    NSString *stringFName = [uniPostUserInfo stringFirstName];
     
-    NSString *stringLName = mdUser[@"last_name"];
-    stringLName = stringLName ? stringLName : @"";
+    NSString *stringLName = [uniPostUserInfo stringLastName];
     stringLName = ([stringLName length])?[[stringLName substringToIndex:1] uppercaseString]:stringLName;
     
     NSString *stringFullName = [NSString stringWithFormat:@"%@ %@", stringFName, stringLName];
@@ -109,8 +108,8 @@
 }
 - (void)setupPhoto
 {
-    NSMutableDictionary *mdUser = [uniiPostModel mdUserInfo];
-    UIImage *imageAvataar = (UIImage*)[mdUser objectForKey:@"scaledImage"];
+    UNIIPostUserInfoModel *uniPostUserInfo = (UNIIPostUserInfoModel*)[uniiPostModel uniPostUserInfo];
+    UIImage *imageAvataar = [uniPostUserInfo imagePhoto];
     if (imageAvataar)
     {
         [[self imageViewPhoto] setImage:imageAvataar];
@@ -123,7 +122,7 @@
         [aiv startAnimating];
         [[[self imageViewPhoto] superview] addSubview:aiv];
         
-        NSString *stringPhotoUrl = [mdUser objectForKey:@"avatar"];
+        NSString *stringPhotoUrl = [uniPostUserInfo stringImageUrl];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
             
             NSData *urlData = [NSData dataWithContentsOfURL:[NSURL URLWithString:stringPhotoUrl]];
@@ -132,7 +131,7 @@
             image = (image.size.height > image.size.width)?[UIImage cropImageWRTWidth:image]:image;
             
             image = [UIImage resizeImageWithRespectToHeight:image withTargetHeight:[self imageViewPhoto].frame.size.height*1.2];
-            [mdUser setObject:image forKey:@"scaledImage"];
+            [uniPostUserInfo setImagePhoto:image];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 

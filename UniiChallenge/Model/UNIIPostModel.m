@@ -7,25 +7,26 @@
 //
 
 #import "UNIIPostModel.h"
+#import "UNIIPostUserInfoModel.h"
 
 @implementation UNIIPostModel
 
 @synthesize stringPostText = stringPostTextSynthesize;
 @synthesize intCommentsCount = intCommentCountSynthesize;
 @synthesize intLikesCount = intLikesCountSynthesize;
-@synthesize mdUserInfo = mdUserInfoSynthesize;
+@synthesize uniPostUserInfo = uniPostUserInfoSynthesize;
 
 - (id)initWithPostText:(NSString*)stringPostText
           commentCount:(NSInteger)intCommentsCount
             likesCount:(NSInteger)intLikesCount
-              userInfo:(NSMutableDictionary*)mdUserInfo
+              userInfo:(UNIIPostUserInfoModel*)uniPostUserInfo
 {
     if (self == [super init])
     {
         stringPostTextSynthesize = stringPostText;
         intCommentCountSynthesize = intCommentsCount;
         intLikesCountSynthesize = intLikesCount;
-        mdUserInfoSynthesize = mdUserInfo;
+        uniPostUserInfoSynthesize = uniPostUserInfo;
     }
     return self;
 }
@@ -38,7 +39,7 @@
         stringPostTextSynthesize = [aDecoder decodeObjectForKey:@"KeyPostText"];
         intCommentCountSynthesize = [aDecoder decodeIntegerForKey:@"KeyCommentsCount"];
         intLikesCountSynthesize = [aDecoder decodeIntegerForKey:@"KeyLikesCount"];
-        mdUserInfoSynthesize = [aDecoder decodeObjectForKey:@"KeyMDUserInfo"];
+        uniPostUserInfoSynthesize = [aDecoder decodeObjectForKey:@"KeyMDUserInfo"];
     }
     return self;
 }
@@ -47,7 +48,7 @@
     [aCoder encodeObject:[self stringPostText] forKey:@"KeyPostText"];
     [aCoder encodeInteger:[self intCommentsCount] forKey:@"KeyCommentsCount"];
     [aCoder encodeInteger:[self intLikesCount] forKey:@"KeyLikesCount"];
-    [aCoder encodeObject:[self mdUserInfo] forKey:@"KeyMDUserInfo"];
+    [aCoder encodeObject:[self uniPostUserInfo] forKey:@"KeyMDUserInfo"];
 }
 
 
