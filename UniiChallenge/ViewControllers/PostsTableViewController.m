@@ -7,7 +7,10 @@
 //
 
 #import "PostsTableViewController.h"
+#import "UNIIPostModel.h"
 #import "PostCell.h"
+
+#pragma mark - Private Interface
 
 @interface PostsTableViewController ()
 <
@@ -22,10 +25,13 @@ PostCellDelegate
 @property (nonatomic, strong) PostCell *postCellFromNib;
 @end
 
+#pragma mark - Implementation
 @implementation PostsTableViewController
 
+#pragma mark - Synthesized Properties
 @synthesize mutableArrayPosts;
 
+#pragma mark - UIViewController Delegate and Inits
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -76,6 +82,9 @@ PostCellDelegate
     }
     [self addPullToRefreshControll];
 }
+
+#pragma mark - Added Pull To Refresh Control
+
 - (void)addPullToRefreshControll
 {
     UIRefreshControl *refreshControlPull = [[UIRefreshControl alloc] init];
@@ -90,6 +99,9 @@ PostCellDelegate
         [refreshControl endRefreshing];
     });
 }
+
+#pragma mark - UITableViewDataSource and UITableViewDelegate
+
 - (void)reloadTableViewData
 {
     [[self tableViewPosts] reloadData];
@@ -108,8 +120,8 @@ PostCellDelegate
         return height;
     }
 
-    NSMutableDictionary *mdOnePost = mutableArrayPosts[[indexPath row]];
-    [[self postCellFromNib] setMutableDictionaryPost:mdOnePost];
+    UNIIPostModel *postModel = (UNIIPostModel*)mutableArrayPosts[[indexPath row]];
+    [[self postCellFromNib] setUniiPostModel:postModel];
     height = [[self postCellFromNib] getHeightForRow];
     
     return height;
@@ -185,8 +197,8 @@ PostCellDelegate
         [cell setDelegate:self];
     }
 
-    NSMutableDictionary *mdOnePost = mutableArrayPosts[[indexPath row]];
-    [cell setMutableDictionaryPost:mdOnePost];
+    UNIIPostModel *postModel = (UNIIPostModel*)mutableArrayPosts[[indexPath row]];
+    [cell setUniiPostModel:postModel];
     [cell setupCell];
     return cell;
 }
@@ -222,6 +234,9 @@ PostCellDelegate
         }
     }
 }
+
+#pragma mark - TableView Action Handlers
+
 - (void)postsCellDidFinishDownloadingPicture:(PostCell*)postCell
 {
     NSIndexPath *indexPath = [[self tableViewPosts] indexPathForCell:postCell];

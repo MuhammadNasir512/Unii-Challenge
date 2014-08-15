@@ -9,7 +9,9 @@
 #import "ViewController.h"
 #import "ServerCommunicationController.h"
 #import "PostsTableViewController.h"
+#import "UNIIPostModel.h"
 
+#pragma mark - Private Interface
 @interface ViewController ()
 <
 ServerCommunicationControllerDelegate,
@@ -25,11 +27,14 @@ PostsTableViewControllerDelegate
 @property (nonatomic, strong) PostsTableViewController *postsTableVC;
 @end
 
+#pragma mark - Implementation
 @implementation ViewController
 
+#pragma mark - Synthesized Properties
 @synthesize stringFirstPageUrl;
 @synthesize postsTableVC;
 
+#pragma mark - UIViewController Delegate and Inits
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -81,6 +86,8 @@ PostsTableViewControllerDelegate
         return;
     }
 }
+#pragma mark - ServerRequest Stuff
+
 - (void)showActivityViewOnView:(UIView*)viewSuperview
 {
     [viewSuperview addSubview:[UIView getActivityViewWithMessage:@"Loading! Please Wait." inSuperview:viewSuperview]];
@@ -93,6 +100,9 @@ PostsTableViewControllerDelegate
     [scc setStringURLString:urlString];
     [scc sendRequestToServer];
 }
+
+#pragma mark - ServerCommunicationControllerDelegate
+
 - (void)serverResponseFailedWithError:(NSMutableDictionary*)mutableDictionaryError
 {
     [UtilityMethods removeActivityViewFromView:[self view]];
@@ -107,9 +117,13 @@ PostsTableViewControllerDelegate
     
     [self setMutableDictionaryNextPageInfo:[mdPosts objectForKey:@"pagination"]];
     NSMutableArray *mutableArrayPosts = (NSMutableArray*)[mdPosts objectForKey:@"data"];
-    [self initPostsTableViewControllerWithData:mutableArrayPosts];
+    NSMutableArray *mutableArrayPostsModel = [self createPostsModelArrayWithData:mutableArrayPosts];
+    
+    [self initPostsTableViewControllerWithData:mutableArrayPostsModel];
     [self setThisVCAlreadyLoaded:YES];
 }
+
+#pragma mark - Initializing Posts TableVC
 
 - (void)initPostsTableViewControllerWithData:(NSMutableArray*)mutableArrayPosts
 {
@@ -148,6 +162,8 @@ PostsTableViewControllerDelegate
     [[self postsTableVC] reloadTableViewData];
 }
 
+#pragma mark - PostsTableViewControllerDelegate
+
 - (void)postsTableViewControllerDidRequestRefresh
 {
     [self showActivityViewOnView:[self view]];
@@ -179,6 +195,32 @@ PostsTableViewControllerDelegate
     }
     
 }
+
+#pragma mark - DataModelling
+
+- (NSMutableArray*)createPostsModelArrayWithData:(NSMutableArray*)mutableArrayPosts
+{
+    NSMutableArray *maDataToRetun = [NSMutableArray array];
+    [mutableArrayPosts enumerateObjectsUsingBlock:^(NSMutableDictionary *mdOneItem, NSUInteger index, BOOL *stop) {
+        
+        NSString *stringPostText = [mdOneItem objectForKey:@"content"];
+        stringPostText = (stringPostText && ![stringPostText isEqual:[NSNull null]])? stringPostText : @"";
+        NSInteger intCommentsCount = [[mdOneItem objectForKey:@"comment_count"] integerValue];
+        NSInteger intLikesCount = [[mdOneItem objectForKey:@"like_count"] integerValue];
+        NSMutableDictionary *mdUserInfo = [mdOneItem objectForKey:@"user"];
+        mdUserInfo = (mdUserInfo && ![mdUserInfo isEqual:[NSNull null]])? mdUserInfo : [NSMutableDictionary dictionary];
+        
+        UNIIPostModel *postModel = [[UNIIPostModel alloc] initWithPostText:stringPostText
+                                                              commentCount:intCommentsCount
+                                                                likesCount:intLikesCount
+                                                                  userInfo:mdUserInfo];
+        [maDataToRetun addObject:postModel];
+    }];
+    return maDataToRetun;
+}
+
+#pragma mark - App state Notification
+
 - (void)applicationBecameActive
 {
     if ([self isThisVCAlreadyLoaded])

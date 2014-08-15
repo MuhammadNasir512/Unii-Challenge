@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class PostCell;
+@class UNIIPostModel;
 @protocol PostCellDelegate <NSObject>
 - (void)postsCellDidFinishDownloadingPicture:(PostCell*)postCell;
 @end
@@ -17,7 +18,7 @@
 {
 }
 @property (nonatomic, weak) id <PostCellDelegate> delegate;
-@property (nonatomic, strong) NSMutableDictionary *mutableDictionaryPost;
+@property (nonatomic, strong) UNIIPostModel *uniiPostModel;
 - (CGFloat)getHeightForRow;
 - (void)setupCell;
 - (void)setupPhoto;

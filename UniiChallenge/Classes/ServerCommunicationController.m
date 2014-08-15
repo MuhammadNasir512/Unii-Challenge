@@ -14,8 +14,10 @@
 }
 @end
 
+#pragma mark - Implementation
 @implementation ServerCommunicationController
 
+#pragma mark - Synthesized Properties
 @synthesize stringURLString;
 @synthesize dataFromServerAsResponse;
 
@@ -41,6 +43,8 @@
 /********************************************************************/
 /**************** NSURLConnection Delegate Methods ******************/
 /********************************************************************/
+
+#pragma mark - NSURLConnection Delegate Methods
 
 - (NSURLRequest *)connection: (NSURLConnection *)inConnection
              willSendRequest: (NSURLRequest *)inRequest
@@ -103,6 +107,7 @@
 /********************************************************************/
 /********************** Delegate Dispatches *************************/
 /********************************************************************/
+#pragma mark - Delegate Dispatches
 
 - (void)dispatchServerResponseSuccessfulWithData:(NSMutableDictionary*)mutableDictionaryResponse
 {

@@ -7,7 +7,9 @@
 //
 
 #import "PostCell.h"
+#import "UNIIPostModel.h"
 
+#pragma mark - Private Interface
 @interface PostCell ()
 {
     float padding;
@@ -21,10 +23,13 @@
 @property (nonatomic, weak) IBOutlet UIImageView *imageViewPhoto;
 @end
 
+#pragma mark - Implementation
 @implementation PostCell
 
-@synthesize mutableDictionaryPost;
+#pragma mark - Synthesized Properties
+@synthesize uniiPostModel;
 
+#pragma mark - Initializations
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -45,6 +50,7 @@
     [super setSelected:selected animated:animated];
 }
 
+#pragma mark - Cell Setup
 - (void)setupCell
 {
     [[[self viewMainView] layer] setCornerRadius:3.0f];
@@ -70,7 +76,7 @@
 }
 - (void)setupPostTextLabel
 {
-    NSString *stringPostText = [mutableDictionaryPost objectForKey:@"content"];
+    NSString *stringPostText = [uniiPostModel stringPostText];
     stringPostText = [stringPostText length] ? stringPostText : @"";
     [[self labelPostText] setText:stringPostText];
     
@@ -87,15 +93,10 @@
 }
 - (void)setupNameLikesAndCommentsInfo
 {
-    NSInteger intComments = [[mutableDictionaryPost objectForKey:@"comment_count"] integerValue];
-    intComments = intComments ? intComments : 0;
-    [[self labelComments] setText:[NSString stringWithFormat:@"%ld", (long)intComments]];
+    [[self labelComments] setText:[NSString stringWithFormat:@"%ld", (long)[uniiPostModel intCommentsCount]]];
+    [[self labelLikes] setText:[NSString stringWithFormat:@"%ld", (long)[uniiPostModel intLikesCount]]];
     
-    NSInteger intLikes = [[mutableDictionaryPost objectForKey:@"like_count"] integerValue];
-    intLikes = intLikes ? intLikes : 0;
-    [[self labelLikes] setText:[NSString stringWithFormat:@"%ld", (long)intLikes]];
-    
-    NSMutableDictionary *mdUser = [mutableDictionaryPost objectForKey:@"user"];
+    NSMutableDictionary *mdUser = [uniiPostModel mdUserInfo];
     NSString *stringFName = mdUser[@"first_name"];
     stringFName = stringFName ? stringFName : @"";
     
@@ -108,7 +109,7 @@
 }
 - (void)setupPhoto
 {
-    NSMutableDictionary *mdUser = [mutableDictionaryPost objectForKey:@"user"];
+    NSMutableDictionary *mdUser = [uniiPostModel mdUserInfo];
     UIImage *imageAvataar = (UIImage*)[mdUser objectForKey:@"scaledImage"];
     if (imageAvataar)
     {
@@ -145,6 +146,7 @@
     }
     
 }
+#pragma mark - Cell from Nib and Row Height
 - (id)getPostCellFromNib
 {
     static NSString *nibName = @"PostCell";
@@ -168,7 +170,7 @@
 
 - (CGFloat)getHeightForRow
 {
-    NSString *stringPostText = [mutableDictionaryPost objectForKey:@"content"];
+    NSString *stringPostText = [uniiPostModel stringPostText];
     stringPostText = [stringPostText length] ? stringPostText : @"";
     [[self labelPostText] setText:stringPostText];
     

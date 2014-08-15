@@ -13,6 +13,8 @@
 		022235041997634C00151D80 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 022235021997634C00151D80 /* InfoPlist.strings */; };
 		022235061997634C00151D80 /* UniiChallenge_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 022235051997634C00151D80 /* UniiChallenge_Tests.m */; };
 		0222351119977F6A00151D80 /* ViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0222351019977F6A00151D80 /* ViewControllerTests.m */; };
+		0228DBFA199EAD9D005FAED6 /* UNIIPostModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0228DBF9199EAD9D005FAED6 /* UNIIPostModel.m */; };
+		0228DBFB199EAD9D005FAED6 /* UNIIPostModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0228DBF9199EAD9D005FAED6 /* UNIIPostModel.m */; };
 		023A707D199550930053F10E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 023A707C199550930053F10E /* Foundation.framework */; };
 		023A707F199550930053F10E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 023A707E199550930053F10E /* CoreGraphics.framework */; };
 		023A7081199550930053F10E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 023A7080199550930053F10E /* UIKit.framework */; };
@@ -53,6 +55,8 @@
 		022235071997634C00151D80 /* UniiChallenge Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UniiChallenge Tests-Prefix.pch"; sourceTree = "<group>"; };
 		0222351019977F6A00151D80 /* ViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewControllerTests.m; sourceTree = "<group>"; };
 		022235131997847D00151D80 /* ViewController_ViewControllerExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController_ViewControllerExtension.h; sourceTree = "<group>"; };
+		0228DBF8199EAD9D005FAED6 /* UNIIPostModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UNIIPostModel.h; sourceTree = "<group>"; };
+		0228DBF9199EAD9D005FAED6 /* UNIIPostModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UNIIPostModel.m; sourceTree = "<group>"; };
 		023A7079199550930053F10E /* UniiChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UniiChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		023A707C199550930053F10E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		023A707E199550930053F10E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -139,6 +143,15 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		0228DBF7199EAD58005FAED6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0228DBF8199EAD9D005FAED6 /* UNIIPostModel.h */,
+				0228DBF9199EAD9D005FAED6 /* UNIIPostModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		023A7070199550930053F10E = {
 			isa = PBXGroup;
 			children = (
@@ -172,6 +185,7 @@
 		023A7082199550930053F10E /* UniiChallenge */ = {
 			isa = PBXGroup;
 			children = (
+				0228DBF7199EAD58005FAED6 /* Model */,
 				023A70D81995909D0053F10E /* Assets */,
 				022235121997842400151D80 /* Extensions */,
 				023A70BD1995619B0053F10E /* Categories */,
@@ -364,6 +378,7 @@
 			files = (
 				0222351119977F6A00151D80 /* ViewControllerTests.m in Sources */,
 				022235061997634C00151D80 /* UniiChallenge_Tests.m in Sources */,
+				0228DBFB199EAD9D005FAED6 /* UNIIPostModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -375,6 +390,7 @@
 				023A70C0199561CF0053F10E /* UIView+ErrorFeedbackView.m in Sources */,
 				023A708D199550930053F10E /* AppDelegate.m in Sources */,
 				023A70E11995D0820053F10E /* UIImage+ResizedImage.m in Sources */,
+				0228DBFA199EAD9D005FAED6 /* UNIIPostModel.m in Sources */,
 				023A70D3199583D10053F10E /* PostCell.m in Sources */,
 				023A70CE199572800053F10E /* UtilityMethods.m in Sources */,
 				023A70C619956F820053F10E /* PostsTableViewController.m in Sources */,
@@ -563,6 +579,7 @@
 				0222350B1997634C00151D80 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		023A7074199550930053F10E /* Build configuration list for PBXProject "UniiChallenge" */ = {
 			isa = XCConfigurationList;
