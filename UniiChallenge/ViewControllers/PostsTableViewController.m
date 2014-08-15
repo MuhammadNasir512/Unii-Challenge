@@ -15,19 +15,15 @@ UITableViewDataSource,
 UITableViewDelegate,
 PostCellDelegate
 >
-{
-    PostCell *postCellFromNib;
-    CGFloat loadingCellHeight;
-    BOOL disallowLoadingMorePosts;
-    BOOL loadMoreVenuesAutomatically;
-}
 @property (nonatomic, weak) IBOutlet UITableView *tableViewPosts;
+@property (nonatomic, assign) BOOL disallowLoadingMorePosts;
+@property (nonatomic, assign) BOOL loadMoreVenuesAutomatically;
+@property (nonatomic, assign) CGFloat loadingCellHeight;
+@property (nonatomic, strong) PostCell *postCellFromNib;
 @end
 
 @implementation PostsTableViewController
 
-@synthesize delegate = _delegate;
-@synthesize tableViewPosts = tableViewPostsWeak;
 @synthesize mutableArrayPosts;
 
 - (void)didReceiveMemoryWarning
@@ -49,11 +45,11 @@ PostCellDelegate
     [super viewDidLayoutSubviews];
     
     float padding = 0.0f;
-    float xx = tableViewPostsWeak.frame.origin.x;
+    float xx = [self tableViewPosts].frame.origin.x;
     float yy = padding;
-    float ww = tableViewPostsWeak.frame.size.width;
+    float ww = [self tableViewPosts].frame.size.width;
     float hh = self.view.frame.size.height - yy - padding;
-    [tableViewPostsWeak setFrame:CGRectMake(xx, yy, ww, hh)];
+    [[self tableViewPosts] setFrame:CGRectMake(xx, yy, ww, hh)];
 }
 
 - (void)viewDidLoad
@@ -61,23 +57,22 @@ PostCellDelegate
     [super viewDidLoad];
     // following variable switches whether to load more posts automatically when reach the end of the list
     // or like to tap last cell to load more post
-    loadMoreVenuesAutomatically = NO;
-
+    [self setLoadMoreVenuesAutomatically:NO];
     [self initTableView];
 }
 
 - (void)initTableView
 {
     NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"PostCell" owner:self options:nil];
-    postCellFromNib = (PostCell*)[nib objectAtIndex:0];
-    loadingCellHeight = 100.0f;
-    if (![tableViewPostsWeak delegate])
+    [self setPostCellFromNib:(PostCell*)[nib objectAtIndex:0]];
+    [self setLoadingCellHeight:100.0f];
+    if (![[self tableViewPosts] delegate])
     {
-        [tableViewPostsWeak setDelegate:self];
+        [[self tableViewPosts] setDelegate:self];
     }
-    if (![tableViewPostsWeak dataSource])
+    if (![[self tableViewPosts] dataSource])
     {
-        [tableViewPostsWeak setDataSource:self];
+        [[self tableViewPosts] setDataSource:self];
     }
     [self addPullToRefreshControll];
 }
@@ -85,7 +80,7 @@ PostCellDelegate
 {
     UIRefreshControl *refreshControlPull = [[UIRefreshControl alloc] init];
     [refreshControlPull addTarget:self action:@selector(refreshControlActionSelector:) forControlEvents:UIControlEventValueChanged];
-    [tableViewPostsWeak addSubview:refreshControlPull];
+    [[self tableViewPosts] addSubview:refreshControlPull];
 }
 - (void)refreshControlActionSelector:(UIRefreshControl*)refreshControl
 {
@@ -97,7 +92,7 @@ PostCellDelegate
 }
 - (void)reloadTableViewData
 {
-    [tableViewPostsWeak reloadData];
+    [[self tableViewPosts] reloadData];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -107,15 +102,15 @@ PostCellDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat height = loadingCellHeight;
+    CGFloat height = [self loadingCellHeight];
     if ([indexPath row] >= [mutableArrayPosts count])
     {
         return height;
     }
 
     NSMutableDictionary *mdOnePost = mutableArrayPosts[[indexPath row]];
-    [postCellFromNib setMutableDictionaryPost:mdOnePost];
-    height = [postCellFromNib getHeightForRow];
+    [[self postCellFromNib] setMutableDictionaryPost:mdOnePost];
+    height = [[self postCellFromNib] getHeightForRow];
     
     return height;
 }
@@ -133,10 +128,10 @@ PostCellDelegate
     
     if ([indexPath row] >= [mutableArrayPosts count])
     {
-        disallowLoadingMorePosts = NO;
+        [self setDisallowLoadingMorePosts:NO];
         NSString *stringLoadingCellText = @"";
         
-        if (loadMoreVenuesAutomatically)
+        if ([self loadMoreVenuesAutomatically])
         {
             stringLoadingCellText = @"Loading more posts!\nPlease Wait...";
         }
@@ -156,7 +151,7 @@ PostCellDelegate
             CGRect rect = [cellLoading frame];
             rect.origin.x = padding;
             rect.origin.y = padding;
-            rect.size.height = loadingCellHeight-2*padding;
+            rect.size.height = [self loadingCellHeight]-2*padding;
             rect.size.width = tableView.frame.size.width-2*padding;
             
             UILabel *labelLoadingText = [[UILabel alloc] init];
@@ -197,7 +192,7 @@ PostCellDelegate
 }
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!loadMoreVenuesAutomatically)
+    if (![self loadMoreVenuesAutomatically])
     {
         return;
     }
@@ -207,11 +202,11 @@ PostCellDelegate
     }
     if ([indexPath row] >= [mutableArrayPosts count])
     {
-        if (disallowLoadingMorePosts)
+        if ([self disallowLoadingMorePosts])
         {
             return;
         }
-        disallowLoadingMorePosts = YES;
+        [self setDisallowLoadingMorePosts:YES];
         [[self delegate] postsTableViewControllerDidScrollToEndOfList];
     }
 }
@@ -220,17 +215,17 @@ PostCellDelegate
 {
     if ([indexPath row] >= [mutableArrayPosts count])
     {
-        if (!loadMoreVenuesAutomatically)
+        if (![self loadMoreVenuesAutomatically])
         {
-            disallowLoadingMorePosts = YES;
+            [self setDisallowLoadingMorePosts:YES];
             [[self delegate] postsTableViewControllerDidScrollToEndOfList];
         }
     }
 }
 - (void)postsCellDidFinishDownloadingPicture:(PostCell*)postCell
 {
-    NSIndexPath *indexPath = [tableViewPostsWeak indexPathForCell:postCell];
-    if ([[tableViewPostsWeak indexPathsForVisibleRows] containsObject:indexPath])
+    NSIndexPath *indexPath = [[self tableViewPosts] indexPathForCell:postCell];
+    if ([[[self tableViewPosts] indexPathsForVisibleRows] containsObject:indexPath])
     {
         [postCell setupPhoto];
     }
@@ -238,7 +233,7 @@ PostCellDelegate
 
 - (void)handleThatNoMorePagesToDisplay
 {
-    UILabel *labelLoadingText = (UILabel*)[tableViewPostsWeak viewWithTag:9292];
+    UILabel *labelLoadingText = (UILabel*)[[self tableViewPosts] viewWithTag:9292];
     if (labelLoadingText)
     {
         [labelLoadingText setText:@"That's it for now!"];

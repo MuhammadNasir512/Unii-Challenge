@@ -15,7 +15,6 @@
 
 @interface PostsTableViewController : UIViewController
 {
-    id <PostsTableViewControllerDelegate> delegate;
 }
 @property (nonatomic, weak) id <PostsTableViewControllerDelegate> delegate;
 @property (nonatomic, strong) NSMutableArray *mutableArrayPosts;

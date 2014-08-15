@@ -16,22 +16,19 @@ ServerCommunicationControllerDelegate,
 PostsTableViewControllerDelegate
 >
 {
-    PostsTableViewController *postsTableVC;
-    NSMutableDictionary *mutableDictionaryNextPageInfo;
-    NSString *stringFirstPageUrl;
-    BOOL shouldAppendResults;
-    BOOL isThisVCAlreadyLoaded;
 }
 @property (nonatomic, weak) IBOutlet UIView *viewPlaceHoler;
+@property (nonatomic, assign, setter = setThisVCAlreadyLoaded:) BOOL isThisVCAlreadyLoaded;
+@property (nonatomic, assign) BOOL shouldAppendResults;
 @property (nonatomic, strong) NSString *stringFirstPageUrl;
 @property (nonatomic, strong) NSMutableDictionary *mutableDictionaryNextPageInfo;
+@property (nonatomic, strong) PostsTableViewController *postsTableVC;
 @end
 
 @implementation ViewController
 
-@synthesize viewPlaceHoler = viewPlaceHolerWeak;
 @synthesize stringFirstPageUrl;
-@synthesize mutableDictionaryNextPageInfo;
+@synthesize postsTableVC;
 
 - (void)didReceiveMemoryWarning
 {
@@ -46,12 +43,12 @@ PostsTableViewControllerDelegate
     float statusBarHeight = [[UIApplication sharedApplication] statusBarFrame].size.height;
     float navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
 
-    float xx = viewPlaceHolerWeak.frame.origin.x;
+    float xx = self.viewPlaceHoler.frame.origin.x;
     float yy = statusBarHeight + navigationBarHeight;
     yy = (systemVersion >= 7.0)?yy:0.0f;
-    float ww = viewPlaceHolerWeak.frame.size.width;
+    float ww = self.viewPlaceHoler.frame.size.width;
     float hh = self.view.frame.size.height - yy;
-    [viewPlaceHolerWeak setFrame:CGRectMake(xx, yy, ww, hh)];
+    [self.viewPlaceHoler setFrame:CGRectMake(xx, yy, ww, hh)];
 }
 - (void)viewDidLoad
 {
@@ -59,13 +56,12 @@ PostsTableViewControllerDelegate
     
     [self initObjects];
     [self showActivityViewOnView:[self view]];
-    [self startLoadingDataFromUrl:stringFirstPageUrl];
+    [self startLoadingDataFromUrl:[self stringFirstPageUrl]];
 }
 
 - (void)initObjects
 {
-    mutableDictionaryNextPageInfo = [NSMutableDictionary dictionary];
-    stringFirstPageUrl = @"http://unii-interview.herokuapp.com/api/v1/posts";
+    [self setStringFirstPageUrl:@"http://unii-interview.herokuapp.com/api/v1/posts"];
     [self initNavigationBar];
 }
 - (void)initNavigationBar
@@ -109,23 +105,23 @@ PostsTableViewControllerDelegate
     NSMutableDictionary *mdResponse = [mutableDictionaryResponse objectForKey:@"Response"];
     NSMutableDictionary *mdPosts = [mdResponse objectForKey:@"posts"];
     
-    mutableDictionaryNextPageInfo = [mdPosts objectForKey:@"pagination"];
+    [self setMutableDictionaryNextPageInfo:[mdPosts objectForKey:@"pagination"]];
     NSMutableArray *mutableArrayPosts = (NSMutableArray*)[mdPosts objectForKey:@"data"];
     [self initPostsTableViewControllerWithData:mutableArrayPosts];
-    isThisVCAlreadyLoaded = YES;
+    [self setThisVCAlreadyLoaded:YES];
 }
 
 - (void)initPostsTableViewControllerWithData:(NSMutableArray*)mutableArrayPosts
 {
-    if (!postsTableVC)
+    if (![self postsTableVC])
     {
-        postsTableVC = [[PostsTableViewController alloc] init];
-        [postsTableVC setDelegate:self];
+        self.postsTableVC = [[PostsTableViewController alloc] init];
+        [[self postsTableVC] setDelegate:self];
     }
-    NSMutableArray *maCurrentArray = [postsTableVC mutableArrayPosts];
-    if (shouldAppendResults)
+    NSMutableArray *maCurrentArray = [[self postsTableVC] mutableArrayPosts];
+    if ([self shouldAppendResults])
     {
-        shouldAppendResults = NO;
+        [self setShouldAppendResults:YES];
         [maCurrentArray addObjectsFromArray:mutableArrayPosts];
         mutableArrayPosts = maCurrentArray;
     }
@@ -135,21 +131,21 @@ PostsTableViewControllerDelegate
         [maCurrentArray addObjectsFromArray:mutableArrayPosts];
     }
     
-    [postsTableVC setMutableArrayPosts:mutableArrayPosts];
-    UIView *postsView = [viewPlaceHolerWeak viewWithTag:1212];
+    [[self postsTableVC] setMutableArrayPosts:mutableArrayPosts];
+    UIView *postsView = [self.viewPlaceHoler viewWithTag:1212];
     if (!postsView)
     {
         float xx = 0.0f;
         float yy = 0.0f;
-        float ww = viewPlaceHolerWeak.frame.size.width;
-        float hh = viewPlaceHolerWeak.frame.size.height;
-        postsView = [postsTableVC view];
+        float ww = self.viewPlaceHoler.frame.size.width;
+        float hh = self.viewPlaceHoler.frame.size.height;
+        postsView = [[self postsTableVC] view];
         [postsView setTag:1212];
         [postsView setFrame:CGRectMake(xx, yy, ww, hh)];
-        [viewPlaceHolerWeak addSubview:postsView];
+        [self.viewPlaceHoler addSubview:postsView];
         return;
     }
-    [postsTableVC reloadTableViewData];
+    [[self postsTableVC] reloadTableViewData];
 }
 
 - (void)postsTableViewControllerDidRequestRefresh
@@ -159,36 +155,36 @@ PostsTableViewControllerDelegate
 }
 - (void)postsTableViewControllerDidScrollToEndOfList
 {
-    NSInteger intCurrentPage = [mutableDictionaryNextPageInfo[@"current_page"] integerValue];
-    NSInteger intTotalPages = [mutableDictionaryNextPageInfo[@"total_pages"] integerValue];
+    NSInteger intCurrentPage = [[self mutableDictionaryNextPageInfo][@"current_page"] integerValue];
+    NSInteger intTotalPages = [[self mutableDictionaryNextPageInfo][@"total_pages"] integerValue];
 //    intTotalPages = 2;
     if (intCurrentPage == intTotalPages)
     {
-        [postsTableVC handleThatNoMorePagesToDisplay];
+        [[self postsTableVC] handleThatNoMorePagesToDisplay];
         return;
     }
     
     NSString *stringUrl = @"";
-    if ([[mutableDictionaryNextPageInfo allKeys] count])
+    if ([[[self mutableDictionaryNextPageInfo] allKeys] count])
     {
-        stringUrl = [mutableDictionaryNextPageInfo objectForKey:@"next_page"];
+        stringUrl = [[self mutableDictionaryNextPageInfo] objectForKey:@"next_page"];
         stringUrl = stringUrl ? stringUrl : @"";
         stringUrl = (![stringUrl isEqual:[NSNull null]]) ? stringUrl : @"";
     }
     
     if ([stringUrl length])
     {
-        shouldAppendResults = YES;
+        [self setShouldAppendResults:YES];
         [self startLoadingDataFromUrl:stringUrl];
     }
     
 }
 - (void)applicationBecameActive
 {
-    if (isThisVCAlreadyLoaded)
+    if ([self isThisVCAlreadyLoaded])
     {
         [self showActivityViewOnView:[self view]];
-        [self startLoadingDataFromUrl:stringFirstPageUrl];
+        [self startLoadingDataFromUrl:[self stringFirstPageUrl]];
     }
 }
 @end

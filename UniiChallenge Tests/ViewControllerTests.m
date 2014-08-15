@@ -66,11 +66,6 @@ ServerCommunicationControllerDelegate
     NSString *stringExpectedTitle = @"POSTS"; // Case sensitive
     XCTAssertTrue([stringTitle isEqualToString:stringExpectedTitle], @"Navigation bar title is incorrect");
     
-    
-    // Testing page info dictionary initialized
-    NSMutableDictionary *mdPageInfo = [viewController mutableDictionaryNextPageInfo];
-    XCTAssertNotNil(mdPageInfo, @"Page info dictionary should be initialized");
-    
 }
 - (void)testUrlIsWorking
 {

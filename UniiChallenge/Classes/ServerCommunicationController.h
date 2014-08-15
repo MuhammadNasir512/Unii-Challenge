@@ -20,7 +20,6 @@
 NSURLConnectionDelegate
 >
 {
-    id <ServerCommunicationControllerDelegate> delegate;
 }
 
 @property (nonatomic, weak) id <ServerCommunicationControllerDelegate> delegate;

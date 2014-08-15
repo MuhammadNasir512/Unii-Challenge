@@ -16,24 +16,23 @@
 
 @implementation ServerCommunicationController
 
-@synthesize delegate = _delegate;
 @synthesize stringURLString;
 @synthesize dataFromServerAsResponse;
 
 - (void)dealloc
 {
-    dataFromServerAsResponse = nil;
-    delegate = nil;
+    [self setDataFromServerAsResponse:nil];
+    [self setDelegate:nil];
 }
 
 - (void)sendRequestToServer
 {
-    if (!dataFromServerAsResponse)
+    if (![self dataFromServerAsResponse])
     {
-        dataFromServerAsResponse = [[NSMutableData alloc] init];
+        self.dataFromServerAsResponse = [[NSMutableData alloc] init];
     }
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setURL:[NSURL URLWithString:stringURLString]];
+    [request setURL:[NSURL URLWithString:[self stringURLString]]];
     NSURLConnection *urlConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     [urlConnection start];
 }
@@ -63,16 +62,15 @@
 {
     NSMutableDictionary *mdError = [[NSMutableDictionary alloc] init];
     [mdError setObject:error forKey:@"Error"];
-    [mdError setObject:stringURLString forKey:@"stringURLString"];
+    [mdError setObject:[self stringURLString] forKey:@"stringURLString"];
     [self dispatchServerResponseFailedWithError:mdError];
 }
 -(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-    dataFromServerAsResponse = [[NSMutableData alloc] init];
 }
 -(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
-    [dataFromServerAsResponse appendData:data];
+    [[self dataFromServerAsResponse] appendData:data];
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
@@ -80,18 +78,16 @@
     
     NSError *jsonParserError = nil;
     NSDictionary *dictionaryJsonResponseObject =
-    [NSJSONSerialization JSONObjectWithData:dataFromServerAsResponse
+    [NSJSONSerialization JSONObjectWithData:[self dataFromServerAsResponse]
                                     options:NSJSONReadingMutableContainers
                                       error:&jsonParserError];
-    
-    
     
     if (jsonParserError == nil || jsonParserError == NULL)
     {
         // Got response from server successfully
         NSMutableDictionary *mdResponseData = [[NSMutableDictionary alloc] init];
         [mdResponseData setObject:dictionaryJsonResponseObject forKey:@"Response"];
-        [mdResponseData setObject:stringURLString forKey:@"stringURLString"];
+        [mdResponseData setObject:[self stringURLString] forKey:@"stringURLString"];
         [self dispatchServerResponseSuccessfulWithData:mdResponseData];
     }
     else
@@ -99,7 +95,7 @@
         // server response success but not a valid json response
         NSMutableDictionary *mdError = [[NSMutableDictionary alloc] init];
         [mdError setObject:jsonParserError forKey:@"Error"];
-        [mdError setObject:stringURLString forKey:@"stringURLString"];
+        [mdError setObject:[self stringURLString] forKey:@"stringURLString"];
         [self dispatchServerResponseFailedWithError:mdError];
     }
 }

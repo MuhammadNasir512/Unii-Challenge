@@ -77,8 +77,6 @@
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
-                <outlet property="imageViewComments" destination="KNN-SX-mEk" id="t0R-ed-Yxe"/>
-                <outlet property="imageViewLikes" destination="cGD-6V-KA4" id="Csk-y6-oSo"/>
                 <outlet property="imageViewPhoto" destination="24u-aC-aSg" id="nzb-6c-Fsb"/>
                 <outlet property="labelComments" destination="1re-dG-MCl" id="Cp0-MH-Fy0"/>
                 <outlet property="labelLikes" destination="PDc-iP-FId" id="t4h-PA-wYY"/>

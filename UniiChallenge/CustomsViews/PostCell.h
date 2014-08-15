@@ -15,7 +15,6 @@
 
 @interface PostCell : UITableViewCell
 {
-    id <PostCellDelegate> delegate;
 }
 @property (nonatomic, weak) id <PostCellDelegate> delegate;
 @property (nonatomic, strong) NSMutableDictionary *mutableDictionaryPost;

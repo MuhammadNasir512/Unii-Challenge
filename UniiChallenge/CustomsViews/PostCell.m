@@ -19,21 +19,9 @@
 @property (nonatomic, weak) IBOutlet UILabel *labelLikes;
 @property (nonatomic, weak) IBOutlet UILabel *labelComments;
 @property (nonatomic, weak) IBOutlet UIImageView *imageViewPhoto;
-@property (nonatomic, weak) IBOutlet UIImageView *imageViewLikes;
-@property (nonatomic, weak) IBOutlet UIImageView *imageViewComments;
 @end
 
 @implementation PostCell
-
-@synthesize delegate = _delegate;
-@synthesize viewMainView = viewMainViewWeak;
-@synthesize labelPostText = labelPostTextWeak;
-@synthesize labelName = labelNameWeak;
-@synthesize labelLikes = labelLikesWeak;
-@synthesize labelComments = labelCommentsWeak;
-@synthesize imageViewPhoto = imageViewPhotoWeak;
-@synthesize imageViewLikes = imageViewLikesWeak;
-@synthesize imageViewComments = imageViewCommentsWeak;
 
 @synthesize mutableDictionaryPost;
 
@@ -59,7 +47,7 @@
 
 - (void)setupCell
 {
-    [[viewMainViewWeak layer] setCornerRadius:3.0f];
+    [[[self viewMainView] layer] setCornerRadius:3.0f];
     [self resetViews];
     [self setupPostTextLabel];
     [self adjustSizeForMainView];
@@ -70,42 +58,42 @@
 {
     NSArray *nib = [self getPostCellFromNib];
     PostCell *cellTemp = (PostCell*)[nib objectAtIndex:0];
-    [labelPostTextWeak setFrame:[[cellTemp labelPostText] frame]];
-    [viewMainViewWeak setFrame:[[cellTemp viewMainView] frame]];
-    [imageViewPhotoWeak setImage:[UIImage imageNamed:@"avataar.png"]];
-    [[imageViewPhotoWeak superview] setFrame:[[[cellTemp imageViewPhoto] superview] frame]];
+    [[self labelPostText] setFrame:[[cellTemp labelPostText] frame]];
+    [[self viewMainView] setFrame:[[cellTemp viewMainView] frame]];
+    [[self imageViewPhoto] setImage:[UIImage imageNamed:@"avataar.png"]];
+    [[[self imageViewPhoto] superview] setFrame:[[[cellTemp imageViewPhoto] superview] frame]];
     
-    if (![[imageViewPhotoWeak layer] cornerRadius])
+    if (![[[self imageViewPhoto] layer] cornerRadius])
     {
-        [[imageViewPhotoWeak layer] setCornerRadius:3.0f];
+        [[[self imageViewPhoto] layer] setCornerRadius:3.0f];
     }
 }
 - (void)setupPostTextLabel
 {
     NSString *stringPostText = [mutableDictionaryPost objectForKey:@"content"];
     stringPostText = [stringPostText length] ? stringPostText : @"";
-    [labelPostTextWeak setText:stringPostText];
+    [[self labelPostText] setText:stringPostText];
     
-    CGSize sizeRecommended = [UtilityMethods getRecommendedSizeForLabel:labelPostTextWeak];
-    [UtilityMethods createFrameForView:labelPostTextWeak withSize:sizeRecommended];
-    [UtilityMethods adjustFrameVerticallyForView:[imageViewPhotoWeak superview] toShowBelowView:labelPostTextWeak withPadding:padding];
+    CGSize sizeRecommended = [UtilityMethods getRecommendedSizeForLabel:[self labelPostText]];
+    [UtilityMethods createFrameForView:[self labelPostText] withSize:sizeRecommended];
+    [UtilityMethods adjustFrameVerticallyForView:[[self imageViewPhoto] superview] toShowBelowView:[self labelPostText] withPadding:padding];
 }
 - (void)adjustSizeForMainView
 {
-    float hh = imageViewPhotoWeak.superview.frame.origin.y + imageViewPhotoWeak.superview.frame.size.height + labelPostTextWeak.frame.origin.y;
-    CGRect rect = [viewMainViewWeak frame];
+    float hh = [self imageViewPhoto].superview.frame.origin.y + [self imageViewPhoto].superview.frame.size.height + [self labelPostText].frame.origin.y;
+    CGRect rect = [[self viewMainView] frame];
     rect.size.height = hh;
-    [viewMainViewWeak setFrame:rect];
+    [[self viewMainView] setFrame:rect];
 }
 - (void)setupNameLikesAndCommentsInfo
 {
     NSInteger intComments = [[mutableDictionaryPost objectForKey:@"comment_count"] integerValue];
     intComments = intComments ? intComments : 0;
-    [labelCommentsWeak setText:[NSString stringWithFormat:@"%ld", (long)intComments]];
+    [[self labelComments] setText:[NSString stringWithFormat:@"%ld", (long)intComments]];
     
     NSInteger intLikes = [[mutableDictionaryPost objectForKey:@"like_count"] integerValue];
     intLikes = intLikes ? intLikes : 0;
-    [labelLikesWeak setText:[NSString stringWithFormat:@"%ld", (long)intLikes]];
+    [[self labelLikes] setText:[NSString stringWithFormat:@"%ld", (long)intLikes]];
     
     NSMutableDictionary *mdUser = [mutableDictionaryPost objectForKey:@"user"];
     NSString *stringFName = mdUser[@"first_name"];
@@ -116,7 +104,7 @@
     stringLName = ([stringLName length])?[[stringLName substringToIndex:1] uppercaseString]:stringLName;
     
     NSString *stringFullName = [NSString stringWithFormat:@"%@ %@", stringFName, stringLName];
-    [labelNameWeak setText:stringFullName];
+    [[self labelName] setText:stringFullName];
 }
 - (void)setupPhoto
 {
@@ -124,15 +112,15 @@
     UIImage *imageAvataar = (UIImage*)[mdUser objectForKey:@"scaledImage"];
     if (imageAvataar)
     {
-        [imageViewPhotoWeak setImage:imageAvataar];
+        [[self imageViewPhoto] setImage:imageAvataar];
     }
     else
     {
         UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-        [aiv setFrame:[imageViewPhotoWeak frame]];
+        [aiv setFrame:[[self imageViewPhoto] frame]];
         [aiv setTag:313131];
         [aiv startAnimating];
-        [[imageViewPhotoWeak superview] addSubview:aiv];
+        [[[self imageViewPhoto] superview] addSubview:aiv];
         
         NSString *stringPhotoUrl = [mdUser objectForKey:@"avatar"];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
@@ -142,14 +130,14 @@
             image = (image.size.width > image.size.height)?[UIImage cropImageWRTHeight:image]:image;
             image = (image.size.height > image.size.width)?[UIImage cropImageWRTWidth:image]:image;
             
-            image = [UIImage resizeImageWithRespectToHeight:image withTargetHeight:imageViewPhotoWeak.frame.size.height*1.2];
+            image = [UIImage resizeImageWithRespectToHeight:image withTargetHeight:[self imageViewPhoto].frame.size.height*1.2];
             [mdUser setObject:image forKey:@"scaledImage"];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 
                 [[self delegate] postsCellDidFinishDownloadingPicture:self];
 
-                UIActivityIndicatorView *aiv = (UIActivityIndicatorView*)[[imageViewPhotoWeak superview] viewWithTag:313131];
+                UIActivityIndicatorView *aiv = (UIActivityIndicatorView*)[[[self imageViewPhoto] superview] viewWithTag:313131];
                 [aiv stopAnimating];
                 [aiv removeFromSuperview];
             });
@@ -182,10 +170,10 @@
 {
     NSString *stringPostText = [mutableDictionaryPost objectForKey:@"content"];
     stringPostText = [stringPostText length] ? stringPostText : @"";
-    [labelPostTextWeak setText:stringPostText];
+    [[self labelPostText] setText:stringPostText];
     
-    CGSize sizeRecommended = [UtilityMethods getRecommendedSizeForLabel:labelPostTextWeak];
-    CGFloat heightToReturn = labelPostTextWeak.frame.origin.y*3 + sizeRecommended.height + imageViewPhotoWeak.superview.frame.size.height + padding;
+    CGSize sizeRecommended = [UtilityMethods getRecommendedSizeForLabel:[self labelPostText]];
+    CGFloat heightToReturn = [self labelPostText].frame.origin.y*3 + sizeRecommended.height + [self imageViewPhoto].superview.frame.size.height + padding;
     return heightToReturn;
 }
 
