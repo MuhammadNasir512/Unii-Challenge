@@ -12,6 +12,7 @@
 {
     
 }
+@property (nonatomic, weak) IBOutlet UIView *viewPlaceHoler;
 @property (nonatomic, strong) NSString *stringFirstPageUrl;
 @property (nonatomic, strong) NSMutableDictionary *mutableDictionaryNextPageInfo;
 

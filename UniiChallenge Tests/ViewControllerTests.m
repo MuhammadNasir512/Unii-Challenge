@@ -9,6 +9,7 @@
 #import <XCTest/XCTest.h>
 #import "ViewController_ViewControllerExtension.h"
 #import "ServerCommunicationController.h"
+#import "UNIIJsonParser.h"
 
 @interface ViewControllerTests : XCTestCase
 <
@@ -35,6 +36,11 @@ ServerCommunicationControllerDelegate
     [super tearDown];
 }
 
+- (void)testIfIBOutletConnectionForContainerViewExist
+{
+    [viewController performSelectorOnMainThread:@selector(loadView) withObject:nil waitUntilDone:YES];
+    XCTAssertNotNil([viewController viewPlaceHoler], @"Place holder view cannot be nil");
+}
 - (void)testIfSelectorExistsToHandleForegroundState
 {
     BOOL isSelectorThere = [viewController respondsToSelector:@selector(applicationBecameActive)];
@@ -94,17 +100,30 @@ ServerCommunicationControllerDelegate
 //    mutableDictionaryResponse = nil;
     XCTAssertNotNil(mutableDictionaryResponse, @"Failed to get response");
     
-    NSMutableDictionary *mdResponse = [mutableDictionaryResponse objectForKey:@"Response"];
+    NSData *data = [mutableDictionaryResponse objectForKey:@"Response"];
 //    mdResponse = nil;
-    XCTAssertNotNil(mdResponse, @"Failed to get response object");
+    XCTAssertNotNil(data, @"Failed to get response object");
     
-    NSMutableDictionary *mdPosts = [mdResponse objectForKey:@"posts"];
+    UNIIJsonParser *jsonParser = [[UNIIJsonParser alloc] init];
+    [jsonParser setDataToParse:data];
+    
+    NSMutableDictionary *mdParserResponse = [jsonParser parseJson];
+//    mdParserResponse = nil;
+    XCTAssertNotNil(mdParserResponse, @"Failed to get Parsers Response");
+    
+    NSMutableDictionary *mdParsedData = [mdParserResponse objectForKey:@"ParsedData"];
+//    mdParsedData = nil;
+    XCTAssertNotNil(mdParsedData, @"Failed to get Parsed Data");
+
+    NSMutableDictionary *mdPosts = [mdParsedData objectForKey:@"posts"];
 //    mdPosts = nil;
     XCTAssertNotNil(mdPosts, @"Failed to get posts object");
     
     NSMutableArray *mutableArrayData = (NSMutableArray*)[mdPosts objectForKey:@"data"];
 //    mutableArrayData = nil;
     XCTAssertNotNil(mutableArrayData, @"Failed to get posts array");
+    
+    jsonParser = nil;
 }
 
 @end
