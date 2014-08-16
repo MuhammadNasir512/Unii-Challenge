@@ -12,6 +12,7 @@
 {
     
 }
+@property (nonatomic, strong) NSMutableData *dataFromServerAsResponse;
 @end
 
 #pragma mark - Implementation
@@ -80,28 +81,10 @@
 {
 //    NSString *string = [[NSString alloc] initWithData:dataFromServerAsResponse encoding:NSUTF8StringEncoding];
     
-    NSError *jsonParserError = nil;
-    NSDictionary *dictionaryJsonResponseObject =
-    [NSJSONSerialization JSONObjectWithData:[self dataFromServerAsResponse]
-                                    options:NSJSONReadingMutableContainers
-                                      error:&jsonParserError];
-    
-    if (jsonParserError == nil || jsonParserError == NULL)
-    {
-        // Got response from server successfully
-        NSMutableDictionary *mdResponseData = [[NSMutableDictionary alloc] init];
-        [mdResponseData setObject:dictionaryJsonResponseObject forKey:@"Response"];
-        [mdResponseData setObject:[self stringURLString] forKey:@"stringURLString"];
-        [self dispatchServerResponseSuccessfulWithData:mdResponseData];
-    }
-    else
-    {
-        // server response success but not a valid json response
-        NSMutableDictionary *mdError = [[NSMutableDictionary alloc] init];
-        [mdError setObject:jsonParserError forKey:@"Error"];
-        [mdError setObject:[self stringURLString] forKey:@"stringURLString"];
-        [self dispatchServerResponseFailedWithError:mdError];
-    }
+    NSMutableDictionary *mdResponseData = [[NSMutableDictionary alloc] init];
+    [mdResponseData setObject:[self dataFromServerAsResponse] forKey:@"Response"];
+    [mdResponseData setObject:[self stringURLString] forKey:@"stringURLString"];
+    [self dispatchServerResponseSuccessfulWithData:mdResponseData];
 }
 
 /********************************************************************/

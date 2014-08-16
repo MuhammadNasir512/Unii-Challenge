@@ -24,7 +24,6 @@ NSURLConnectionDelegate
 
 @property (nonatomic, weak) id <ServerCommunicationControllerDelegate> delegate;
 @property (nonatomic, strong) NSString *stringURLString;
-@property (nonatomic, strong) NSMutableData *dataFromServerAsResponse;
 
 - (void)sendRequestToServer;
 

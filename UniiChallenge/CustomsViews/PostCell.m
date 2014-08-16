@@ -21,7 +21,6 @@
 @property (nonatomic, weak) IBOutlet UILabel *labelName;
 @property (nonatomic, weak) IBOutlet UILabel *labelLikes;
 @property (nonatomic, weak) IBOutlet UILabel *labelComments;
-@property (nonatomic, weak) IBOutlet UIImageView *imageViewPhoto;
 @end
 
 #pragma mark - Implementation
@@ -112,6 +111,7 @@
     UIImage *imageAvataar = [uniPostUserInfo imagePhoto];
     if (imageAvataar)
     {
+        [self removeActivityViewFromView:[self imageViewPhoto]];
         [[self imageViewPhoto] setImage:imageAvataar];
     }
     else
@@ -121,37 +121,15 @@
         [aiv setTag:313131];
         [aiv startAnimating];
         [[[self imageViewPhoto] superview] addSubview:aiv];
-        
-        NSString *stringPhotoUrl = [uniPostUserInfo stringImageUrl];
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-            
-            NSData *urlData = [NSData dataWithContentsOfURL:[NSURL URLWithString:stringPhotoUrl]];
-            UIImage *image = [[UIImage alloc] initWithData:urlData];
-            image = (image.size.width > image.size.height)?[UIImage cropImageWRTHeight:image]:image;
-            image = (image.size.height > image.size.width)?[UIImage cropImageWRTWidth:image]:image;
-            
-            image = [UIImage resizeImageWithRespectToHeight:image withTargetHeight:[self imageViewPhoto].frame.size.height*1.2];
-            [uniPostUserInfo setImagePhoto:image];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
-                [[self delegate] postsCellDidFinishDownloadingPicture:self];
-
-                UIActivityIndicatorView *aiv = (UIActivityIndicatorView*)[[[self imageViewPhoto] superview] viewWithTag:313131];
-                [aiv stopAnimating];
-                [aiv removeFromSuperview];
-            });
-        });
     }
-    
 }
-#pragma mark - Cell from Nib and Row Height
+
+#pragma mark - Other methods
 - (id)getPostCellFromNib
 {
-    static NSString *nibName = @"PostCell";
-    
     if (!cellFromNib)
     {
+        NSString *nibName = @"PostCell";
         Class aClass = NSClassFromString(@"UINib");
         if ([aClass respondsToSelector:@selector(nibWithNibName:bundle:)])
         {
@@ -176,6 +154,13 @@
     CGSize sizeRecommended = [UtilityMethods getRecommendedSizeForLabel:[self labelPostText]];
     CGFloat heightToReturn = [self labelPostText].frame.origin.y*3 + sizeRecommended.height + [self imageViewPhoto].superview.frame.size.height + padding;
     return heightToReturn;
+}
+
+- (void)removeActivityViewFromView:(UIView*)view
+{
+    UIActivityIndicatorView *aiv = (UIActivityIndicatorView*)[view viewWithTag:313131];
+    [aiv stopAnimating];
+    [aiv removeFromSuperview];
 }
 
 @end

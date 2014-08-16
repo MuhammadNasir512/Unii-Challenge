@@ -18,6 +18,7 @@
 {
 }
 @property (nonatomic, weak) id <PostCellDelegate> delegate;
+@property (nonatomic, weak) IBOutlet UIImageView *imageViewPhoto;
 @property (nonatomic, strong) UNIIPostModel *uniiPostModel;
 - (CGFloat)getHeightForRow;
 - (void)setupCell;

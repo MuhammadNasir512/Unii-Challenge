@@ -7,6 +7,8 @@
 //
 
 #import "PostsTableViewController.h"
+#import "ServerCommunicationController.h"
+#import "UNIIPostUserInfoModel.h"
 #import "UNIIPostModel.h"
 #import "PostCell.h"
 
@@ -14,6 +16,7 @@
 
 @interface PostsTableViewController ()
 <
+ServerCommunicationControllerDelegate,
 UITableViewDataSource,
 UITableViewDelegate,
 PostCellDelegate
@@ -64,6 +67,7 @@ PostCellDelegate
     // following variable switches whether to load more posts automatically when reach the end of the list
     // or like to tap last cell to load more post
     [self setLoadMoreVenuesAutomatically:NO];
+    [self startDownloadingImages];
     [self initTableView];
 }
 
@@ -105,6 +109,7 @@ PostCellDelegate
 - (void)reloadTableViewData
 {
     [[self tableViewPosts] reloadData];
+    [self startDownloadingImages];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -253,6 +258,72 @@ PostCellDelegate
     {
         [labelLoadingText setText:@"That's it for now!"];
     }
+}
+
+#pragma mark - Images downloader
+
+- (void)startDownloadingImages
+{
+    NSMutableArray *maUrls = [NSMutableArray array];
+    [mutableArrayPosts enumerateObjectsUsingBlock:^(UNIIPostModel *postModel, NSUInteger index, BOOL *stop) {
+        UNIIPostUserInfoModel *postUserInfo = (UNIIPostUserInfoModel*)[postModel uniPostUserInfo];
+        if (![postUserInfo imagePhoto])
+        {
+            [maUrls addObject:[postUserInfo stringImageUrl]];
+        }
+    }];
+    
+    NSSet *setUniqueUrls = [NSSet setWithArray:maUrls];
+    for (NSString *stringUrl in setUniqueUrls)
+    {
+        ServerCommunicationController *scc = [[ServerCommunicationController alloc] init];
+        [scc setDelegate:self];
+        [scc setStringURLString:stringUrl];
+        [scc sendRequestToServer];
+    }
+}
+
+#pragma mark - ServerCommunicationControllerDelegate
+
+- (void)serverResponseFailedWithError:(NSMutableDictionary*)mutableDictionaryError
+{
+}
+- (void)serverResponseSuccessfulWithData:(NSMutableDictionary*)mutableDictionaryResponse
+{
+    NSData *data = (NSData*)[mutableDictionaryResponse objectForKey:@"Response"];
+    __block UIImage *image = [[UIImage alloc] initWithData:data];
+    image = (image.size.width > image.size.height)?[UIImage cropImageWRTHeight:image]:image;
+    image = (image.size.height > image.size.width)?[UIImage cropImageWRTWidth:image]:image;
+    
+    [mutableArrayPosts enumerateObjectsUsingBlock:^(UNIIPostModel *postModel, NSUInteger index, BOOL *stop) {
+        UNIIPostUserInfoModel *postUserInfo = (UNIIPostUserInfoModel*)[postModel uniPostUserInfo];
+        NSString *stringUrl1 = [postUserInfo stringImageUrl];
+        NSString *stringUrl2 = [mutableDictionaryResponse objectForKey:@"stringURLString"];
+        stringUrl2 = ![stringUrl2 isEqual:[NSNull null]] ? stringUrl2 : @"";
+        if ([stringUrl1 isEqualToString:stringUrl2])
+        {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                
+                UIImage *imageResized = [[UIImage alloc] init];
+                imageResized = [UIImage resizeImageWithRespectToHeight:image withTargetHeight:40*1.2];
+                [postUserInfo setImagePhoto:imageResized];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                    PostCell *postCell = (PostCell*)[[self tableViewPosts] cellForRowAtIndexPath:indexPath];
+                    if (postCell)
+                    {
+                        if ([[[self tableViewPosts] indexPathsForVisibleRows] containsObject:indexPath])
+                        {
+                            [postCell setupPhoto];
+                        }
+                    }
+                });
+            });
+        }
+        
+    }];
 }
 
 @end

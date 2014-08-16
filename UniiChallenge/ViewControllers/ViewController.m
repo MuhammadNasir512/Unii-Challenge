@@ -10,6 +10,7 @@
 #import "ServerCommunicationController.h"
 #import "PostsTableViewController.h"
 #import "UNIIPostUserInfoModel.h"
+#import "UNIIJsonParser.h"
 #import "UNIIPostModel.h"
 
 #pragma mark - Private Interface
@@ -87,7 +88,7 @@ PostsTableViewControllerDelegate
         return;
     }
 }
-#pragma mark - ServerRequest Stuff
+#pragma mark - ServerCommunication Stuff
 
 - (void)showActivityViewOnView:(UIView*)viewSuperview
 {
@@ -102,7 +103,7 @@ PostsTableViewControllerDelegate
     [scc sendRequestToServer];
 }
 
-#pragma mark - ServerCommunicationControllerDelegate
+#pragma mark - JSON Parsing, Error Handling
 
 - (void)serverResponseFailedWithError:(NSMutableDictionary*)mutableDictionaryError
 {
@@ -113,13 +114,26 @@ PostsTableViewControllerDelegate
 - (void)serverResponseSuccessfulWithData:(NSMutableDictionary*)mutableDictionaryResponse
 {
     [UtilityMethods removeActivityViewFromView:[self view]];
-    NSMutableDictionary *mdResponse = [mutableDictionaryResponse objectForKey:@"Response"];
-    NSMutableDictionary *mdPosts = [mdResponse objectForKey:@"posts"];
-    
-    [self setMutableDictionaryNextPageInfo:[mdPosts objectForKey:@"pagination"]];
-    NSMutableArray *mutableArrayPosts = (NSMutableArray*)[mdPosts objectForKey:@"data"];
-    NSMutableArray *mutableArrayPostsModel = [self createPostsModelArrayWithData:mutableArrayPosts];
-    
+    NSData *data = (NSData*)[mutableDictionaryResponse objectForKey:@"Response"];
+
+    NSMutableArray *mutableArrayPosts = [NSMutableArray array];
+    NSMutableArray *mutableArrayPostsModel = [NSMutableArray array];
+
+    UNIIJsonParser *jsonParser = [[UNIIJsonParser alloc] init];
+    [jsonParser setDataToParse:data];
+    NSMutableDictionary *mdParserResponse = [jsonParser parseJson];
+    NSMutableDictionary *mdParsedData = [mdParserResponse objectForKey:@"ParsedData"];
+    if (mdParsedData)
+    {
+        NSMutableDictionary *mdPosts = [mdParsedData objectForKey:@"posts"];
+        [self setMutableDictionaryNextPageInfo:[mdPosts objectForKey:@"pagination"]];
+        mutableArrayPosts = (NSMutableArray*)[mdPosts objectForKey:@"data"];
+        mutableArrayPostsModel = [self createPostsModelArrayWithData:mutableArrayPosts];
+    }
+    else
+    {
+        [UtilityMethods feedbackUserWithMessage:@"An error occured while loading posts.\nYou may try again later." inSuperview:[self view]];
+    }
     [self initPostsTableViewControllerWithData:mutableArrayPostsModel];
     [self setThisVCAlreadyLoaded:YES];
 }
