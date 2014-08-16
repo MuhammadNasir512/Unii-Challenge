@@ -12,6 +12,11 @@
 
 @synthesize dataToParse;
 
+/**
+ *  This function parses json from NSData object and create NSMutableDictionary
+ *
+ *  @return Parsed data or error
+ */
 - (NSMutableDictionary*)parseJson
 {
     NSError *jsonParserError = nil;

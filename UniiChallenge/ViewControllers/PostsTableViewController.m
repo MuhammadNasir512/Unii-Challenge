@@ -70,7 +70,10 @@ PostCellDelegate
     [self startDownloadingImages];
     [self initTableView];
 }
-
+/**
+ *  This method adds pull to refresh controll, set data source and delegate to table view
+ and setup properties to calculate cell height dynamically
+ */
 - (void)initTableView
 {
     NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"PostCell" owner:self options:nil];
@@ -106,6 +109,9 @@ PostCellDelegate
 
 #pragma mark - UITableViewDataSource and UITableViewDelegate
 
+/**
+ *  Reloads the table view. Its required when a more posts are loaded or when app state changes to foreground etc
+ */
 - (void)reloadTableViewData
 {
     [[self tableViewPosts] reloadData];
@@ -251,6 +257,9 @@ PostCellDelegate
     }
 }
 
+/**
+ *  If no more posts are there to load then following methods feed backs user.
+ */
 - (void)handleThatNoMorePagesToDisplay
 {
     UILabel *labelLoadingText = (UILabel*)[[self tableViewPosts] viewWithTag:9292];

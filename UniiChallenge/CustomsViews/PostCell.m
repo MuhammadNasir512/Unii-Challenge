@@ -51,6 +51,9 @@
 }
 
 #pragma mark - Cell Setup
+/**
+ *  After dequeuing the reusable cell, it is needed to reset this and set with new contents. Its done through this method 
+ */
 - (void)setupCell
 {
     [[[self viewMainView] layer] setCornerRadius:3.0f];
@@ -105,6 +108,9 @@
     NSString *stringFullName = [NSString stringWithFormat:@"%@ %@", stringFName, stringLName];
     [[self labelName] setText:stringFullName];
 }
+/**
+ *  This method is used to set photo image of user
+ */
 - (void)setupPhoto
 {
     UNIIPostUserInfoModel *uniPostUserInfo = (UNIIPostUserInfoModel*)[uniiPostModel uniPostUserInfo];
@@ -145,6 +151,12 @@
     return cellFromNib;
 }
 
+/**
+ *  This method calculates cell hight with respect to its contents. It is assumed that "stringPostText"
+ property is set.
+ *
+ *  @return heightOfCell
+ */
 - (CGFloat)getHeightForRow
 {
     NSString *stringPostText = [uniiPostModel stringPostText];

@@ -257,6 +257,9 @@ PostsTableViewControllerDelegate
 
 #pragma mark - App state Notification
 
+/**
+ *  When app state changes to active state then we need to reload posts through this method.
+ */
 - (void)applicationBecameActive
 {
     if ([self isThisVCAlreadyLoaded])

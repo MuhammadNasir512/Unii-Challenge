@@ -28,6 +28,9 @@
     [self setDelegate:nil];
 }
 
+/**
+ *  This methods invokes url connection to load data asynchronously and dispatches delegate upon success or failure
+ */
 - (void)sendRequestToServer
 {
     if (![self dataFromServerAsResponse])
@@ -92,10 +95,20 @@
 /********************************************************************/
 #pragma mark - Delegate Dispatches
 
+/**
+ *  If data was retrieved from provided URL successfully then this delegate message will be dispatched
+ *
+ *  @param mutableDictionaryResponse contain actual response and some metadata
+ */
 - (void)dispatchServerResponseSuccessfulWithData:(NSMutableDictionary*)mutableDictionaryResponse
 {
     [[self delegate] serverResponseSuccessfulWithData:mutableDictionaryResponse];
 }
+/**
+ *  If data was failed retrieved from provided URL then this delegate message will be dispatched
+ *
+ *  @param mutableDictionaryResponse contain error info and some metadata
+ */
 - (void)dispatchServerResponseFailedWithError:(NSMutableDictionary*)mutableDictionaryError
 {
     [[self delegate] serverResponseFailedWithError:mutableDictionaryError];
